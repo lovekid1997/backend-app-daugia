@@ -1,0 +1,6 @@
+
+{
+    "env":{
+        "process.env.MONGO_ATLAS_PW": "vinhbao"
+    }
+}
