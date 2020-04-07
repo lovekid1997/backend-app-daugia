@@ -16,9 +16,8 @@ router.get('/:userID', function(req, res, next) {
         message: 'thanhcong',
         product: user.product,
         _id: user._id,
-        name: user.name,
-        email: user.email
-
+        email: user.email,
+        name: user.name
       })
   });
 
