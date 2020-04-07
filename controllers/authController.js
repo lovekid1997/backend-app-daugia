@@ -67,7 +67,9 @@ router.post('/signin',async(req,res)=>{
         });
 
         res.status(200).json({auth: true, token,
-        id: user._id});
+        id: user._id,
+        name: user.userName,
+        email: user.email});
 
     } catch (e) {
         console.log(e)
