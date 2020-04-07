@@ -14,7 +14,11 @@ router.get('/:userID', function(req, res, next) {
       }
       res.status(200).json({
         message: 'thanhcong',
-        data: user
+        product: user.product,
+        _id: user._id,
+        name: user.name,
+        email: user.email
+
       })
   });
 
