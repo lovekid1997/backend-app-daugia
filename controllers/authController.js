@@ -8,17 +8,45 @@ const verifyToken = require('../controllers/verifyToken');
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 
+const path = require('path');
+const multer = require('multer');
+
+
+const storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null,'./imageUser/');
+    },
+    filename: function(req,file,cb){
+        cb(null,  Date.now() +  file.originalname);
+    }
+    });
+    
+    const fileFilter = (req,file, cb) => {
+        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' ||file.mimetype === 'image/jpg'){
+            cb(null, true);
+        }
+        else
+         {cb(null, false);}
+        
+    };
+    
+    const upload = multer({storage: storage,
+        limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter});
 
 //const productController = require('../controllers/productController');
 
-router.post('/signup',async(req,res) => {
+router.post('/signup',upload.single('imageUser'),async(req,res) => {
     try{
         const {userName, email , passWord} = req.body;
-
+        //const imageUser =path.basename(req.file.path);
         const user = new User({
-            userName,
-            email,
-            passWord
+            userName: req.body.userName,
+            email: req.body.email,
+            passWord: req.body.passWord,
+            imageUser : path.basename(req.file.path)
         });
 
         user.passWord = await user.encryptPasword(passWord);

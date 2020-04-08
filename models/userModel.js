@@ -6,6 +6,7 @@ const userSchema = new Schema({
     userName : String,
     email: String,
     passWord: String,
+    imageUser:String,
     product: [{type:mongoose.Schema.Types.ObjectId}] ,
     create_at: {
         type: Date,
