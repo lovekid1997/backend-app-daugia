@@ -36,52 +36,77 @@ const storage = multer.diskStorage({
     },
     fileFilter: fileFilter});
 
-//const productController = require('../controllers/productController');
 
-router.post('/signup',upload.single('imageUser'),async(req,res) => {
-    try{
-        const {userName, email , passWord} = req.body;
-        //const imageUser =path.basename(req.file.path);
-        const user = new User({
-            userName: req.body.userName,
-            email: req.body.email,
-            passWord: req.body.passWord,
-            imageUser : path.basename(req.file.path)
-        });
+    router.post('/signup',async(req,res) => {
+        try{
+            const {userName, email , passWord,imageUser} = req.body;
+            //const imageUser =path.basename(req.file.path);
+            const user = new User({
+                userName: req.body.userName,
+                email: req.body.email,
+                passWord: req.body.passWord,
+                imageUser : req.body.imageUser,
+                phoneUser: req.body.phoneUser
+            });
+    
+            user.passWord = await user.encryptPasword(passWord);
+            await user.save();
+    
+            const token = jwt.sign({ id: user.id },config.secret,{
+                expiresIn: '24h'
+            });
+    
+            res.status(200).json({auth: true, token,
+                id: user._id,
+                name: user.userName,
+                email: user.email,
+                phoneUser: user.phoneUser});
+    
+        }
+        catch (e)
+        {   
+            console.log(e)
+            res.status(500).send('there was a problem signin');
+        }
+    });
 
-        user.passWord = await user.encryptPasword(passWord);
-        await user.save();
+// router.post('/signup',upload.single('imageUser'),async(req,res) => {
+//     try{
+//         const {userName, email , passWord} = req.body;
+//         //const imageUser =path.basename(req.file.path);
+//         const user = new User({
+//             userName: req.body.userName,
+//             email: req.body.email,
+//             passWord: req.body.passWord,
+//             imageUser : path.basename(req.file.path),
+//             phoneUser: req.body.phoneUser
+//         });
 
-        const token = jwt.sign({ id: user.id },config.secret,{
-            expiresIn: '24h'
-        });
+//         user.passWord = await user.encryptPasword(passWord);
+//         await user.save();
 
-        res.status(200).json({auth: true, token});
+//         const token = jwt.sign({ id: user.id },config.secret,{
+//             expiresIn: '24h'
+//         });
 
-    }
-    catch (e)
-    {   
-        console.log(e)
-        res.status(500).send('there was a problem signin');
-    }
-});
+//         res.status(200).json({auth: true, token});
 
-
-// router.route('/products/:id',)
-//         .get(productController.index)
-//         .post(productController.new)
+//     }
+//     catch (e)
+//     {   
+//         console.log(e)
+//         res.status(500).send('there was a problem signin');
+//     }
+// });
 
 
-// router.route('/product/:id')
-//         .get(productController.view)
-//         .post(productController.update)
-//         .delete(productController.delete)
 
 router.post('/signin',async(req,res)=>{
     try {
-        const user = await User.findOne({ email: req.body.email, });
+      //  const user = await User.findOne({ email: req.body.email, });
+        const user = await User.findOne({ phoneUser: req.body.phoneUser, });
         if(!user){
-            return res.status(404).send("The email doesn't exist");
+            return res.status(404).send("The phone doesn't exist");
         }
 
         const validPassword = await user.validatePassword(req.body.passWord, user.passWord);
@@ -97,7 +122,8 @@ router.post('/signin',async(req,res)=>{
         res.status(200).json({auth: true, token,
         id: user._id,
         name: user.userName,
-        email: user.email});
+        email: user.email,
+        phoneUser: user.phoneUser});
 
     } catch (e) {
         console.log(e)
