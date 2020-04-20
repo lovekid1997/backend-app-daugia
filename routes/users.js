@@ -12,7 +12,7 @@ router.get('/:userID', function(req, res, next) {
         message: err
       })
     }
-    res.status(200).json({c
+    res.status(200).json({
       data: user,
     })
   });
