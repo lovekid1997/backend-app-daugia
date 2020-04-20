@@ -68,7 +68,7 @@ const storage = multer.diskStorage({
                     data: user,
                     message: "thanh cong",
                     _id: user._id,
-                    id: user.id,
+                    id: user.userID,
                     name: user.userName,
                     email: user.email,
                     phoneUser: user.phoneUser});
