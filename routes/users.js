@@ -18,7 +18,10 @@ router.get('/:userID', function(req, res, next) {
       name: user.userName,
       email: user.email
     })
-  });
+  });   
+
+
+  
   // User.findById(userID,function(err,user){
   //     if(err){
   //       res.json({
