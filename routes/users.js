@@ -4,22 +4,39 @@ var User = require('../models/userModel');
 /* GET users listing. */
 router.get('/:userID', function(req, res, next) {
   const userID = req.params.userID;
-  User.findById(userID,function(err,user){
-      if(err){
-        res.json({
-          status: 'err',
-          code: 500,
-          message: err
-        })
-      }
-      res.status(200).json({
-        message: 'thanhcong',
-        product: user.product,
-        _id: user._id,
-        email: user.email,
-        name: user.userName
+  User.findOne({userID: userID},function(err,user){
+    if(err){
+      res.json({
+        status: 'err',
+        code: 500,
+        message: err
       })
+    }
+    res.status(200).json({
+      message: 'thanhcong',
+      data: user,
+      _id: user._id,
+      userID : user.userID,
+      email: user.email,
+      name: user.userName
+    })
   });
+  // User.findById(userID,function(err,user){
+  //     if(err){
+  //       res.json({
+  //         status: 'err',
+  //         code: 500,
+  //         message: err
+  //       })
+  //     }
+  //     res.status(200).json({
+  //       message: 'thanhcong',
+  //       product: user.product,
+  //       _id: user._id,
+  //       email: user.email,
+  //       name: user.userName
+  //     })
+  // });
 
 //   User.findById( userID , function(err,user){
 //     if(err){
