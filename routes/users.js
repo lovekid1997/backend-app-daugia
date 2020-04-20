@@ -38,21 +38,7 @@ router.get('/:userID', function(req, res, next) {
   //     })
   // });
 
-//   User.findById( userID , function(err,user){
-//     if(err){
-//         res.json({
-//             status:'err',
-//             code: 500,
-//             message: err
-//         })
-//     }
-//     res.json({
-//         status: 'success',
-//         code: 200,
-//         message: 'Registros encontrado',
-//         data: user.product
-//     })
-// })
+
 });
 
 module.exports = router;
