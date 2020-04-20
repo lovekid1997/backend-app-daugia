@@ -14,6 +14,9 @@ router.get('/:userID', function(req, res, next) {
     }
     res.status(200).json({
       data: user,
+      _id : user.userID,
+      name: user.userName,
+      email: user.email
     })
   });
   // User.findById(userID,function(err,user){
