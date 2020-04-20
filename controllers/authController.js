@@ -39,30 +39,36 @@ const storage = multer.diskStorage({
 
     router.post('/signup',async(req,res) => {
         try{
-            const {_id, userName, email , passWord, imageUser} = req.body;
+            const {_id, userName, email , imageUser,phoneUser} = req.body;
             //const imageUser =path.basename(req.file.path);
             const user = new User({
                 _id: req.body._id,
                 userName: req.body.userName,
                 email: req.body.email,
-                passWord: req.body.passWord,
+                //passWord: req.body.passWord,
                 imageUser : req.body.imageUser,
                 phoneUser: req.body.phoneUser
             });
-    
-            user.passWord = await user.encryptPasword(passWord);
-            await user.save();
-    
-            const token = jwt.sign({ id: user.id },config.secret,{
-                expiresIn: '24h'
-            });
-    
-            res.status(200).json({auth: true, token,
-                id: user._id,
-                name: user.userName,
-                email: user.email,
-                phoneUser: user.phoneUser});
-    
+            if(user.passWord != null){
+                user.passWord = await user.encryptPasword(passWord);
+                await user.save();
+        
+                const token = jwt.sign({ id: user.id },config.secret,{
+                    expiresIn: '24h'
+                });
+        
+                res.status(200).json({auth: true, token,
+                    id: user._id,
+                    name: user.userName,
+                    email: user.email,
+                    phoneUser: user.phoneUser});
+            }else{
+                res.status(200).json({
+                    id: user._id,
+                    name: user.userName,
+                    email: user.email,
+                    phoneUser: user.phoneUser});
+            }
         }
         catch (e)
         {   
