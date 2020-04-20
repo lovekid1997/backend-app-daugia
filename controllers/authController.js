@@ -39,9 +39,10 @@ const storage = multer.diskStorage({
 
     router.post('/signup',async(req,res) => {
         try{
-            const {userName, email , passWord,imageUser} = req.body;
+            const {_id, userName, email , passWord, imageUser} = req.body;
             //const imageUser =path.basename(req.file.path);
             const user = new User({
+                _id: req.body._id,
                 userName: req.body.userName,
                 email: req.body.email,
                 passWord: req.body.passWord,
