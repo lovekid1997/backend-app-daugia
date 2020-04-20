@@ -49,6 +49,7 @@ const storage = multer.diskStorage({
                 imageUser : req.body.imageUser,
                 phoneUser: req.body.phoneUser
             });
+            
             // if(user.passWord != null){
             //     user.passWord = await user.encryptPasword(passWord);
             //     await user.save();
