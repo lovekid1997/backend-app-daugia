@@ -35,7 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/uploads',express.static('uploads'));
 
-app.use('/imageUser',express.static('imageUser'));
+//app.use('/imageUser',express.static('imageUser'));
+
 app.use(require('./controllers/authController'));
 
 
