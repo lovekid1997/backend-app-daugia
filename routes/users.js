@@ -21,7 +21,6 @@ router.get('/:userID', function(req, res, next) {
   });   
 
 
-  
   // User.findById(userID,function(err,user){
   //     if(err){
   //       res.json({
