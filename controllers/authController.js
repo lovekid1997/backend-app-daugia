@@ -47,7 +47,7 @@ const storage = multer.diskStorage({
                 email: req.body.email,
                 //passWord: req.body.passWord,
                 imageUser : req.body.imageUser,
-                phoneUser: req.body.phoneUser
+              //  phoneUser: req.body.phoneUser
             });
             // if(user.passWord != null){
             //     user.passWord = await user.encryptPasword(passWord);
@@ -70,8 +70,7 @@ const storage = multer.diskStorage({
                     _id: user._id,
                     id: user.userID,
                     name: user.userName,
-                    email: user.email,
-                    phoneUser: user.phoneUser});
+                    email: user.email});
             
         }
         catch (e)

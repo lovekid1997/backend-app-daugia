@@ -4,6 +4,7 @@ var User = require('../models/userModel');
 /* GET users listing. */
 router.get('/:userID', function(req, res, next) {
   const userID = req.params.userID;
+ try{
   User.findOne({userID: userID},function(err,user){
     if(err){
       res.json({
@@ -19,6 +20,10 @@ router.get('/:userID', function(req, res, next) {
       email: user.email
     })
   });   
+ }catch(e){
+  console.log(e)
+  res.status(500).send('there was a problem signin');
+ }
 
 
   // User.findById(userID,function(err,user){
