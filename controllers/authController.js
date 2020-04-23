@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
 
     router.post('/signup',async(req,res) => {
         try{
-            //const {id, userName, email , imageUser,phoneUser} = req.body;
+            const {userName, email , passWord} = req.body;
             //const imageUser =path.basename(req.file.path);
             const user = new User({
                 userName: req.body.userName,
@@ -64,7 +64,7 @@ const storage = multer.diskStorage({
         catch (e)
         {   
             console.log(e)
-            res.status(500).send('there was a problem signin');
+            res.status(500).send('there was a problem signup');
         }
     });
 
