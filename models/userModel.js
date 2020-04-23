@@ -3,7 +3,6 @@ const{ Schema, model} = require('mongoose');
 const bcrypt = require('bcryptjs');
 //const ObjectId = require('mongoose');
 const userSchema = new mongoose.Schema({
-    userID : String,
     userName : String,
     email: String,
     passWord: String,

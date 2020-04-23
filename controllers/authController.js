@@ -42,33 +42,22 @@ const storage = multer.diskStorage({
             //const {id, userName, email , imageUser,phoneUser} = req.body;
             //const imageUser =path.basename(req.file.path);
             const user = new User({
-                userID : req.body.id ,
                 userName: req.body.userName,
                 email: req.body.email,
-                //passWord: req.body.passWord,
-                imageUser : req.body.imageUser,
-              //  phoneUser: req.body.phoneUser
+                passWord: req.body.passWord,
+                //imageUser : req.body.imageUser,
+              //phoneUser: req.body.phoneUser
             });
-            // if(user.passWord != null){
-            //     user.passWord = await user.encryptPasword(passWord);
-            //     await user.save();
-        
-            //     const token = jwt.sign({ id: user.id },config.secret,{
-            //         expiresIn: '24h'
-            //     });
-        
-            //     res.status(200).json({auth: true, token,
-            //         id: user._id,
-            //         name: user.userName,
-            //         email: user.email,
-            //         phoneUser: user.phoneUser});
-            // }else
+
+                user.passWord = await user.encryptPasword(passWord);
                 await user.save();
-                res.status(200).json({
-                    data: user,
-                    message: "thanh cong",
+        
+                const token = jwt.sign({ id: user.id },config.secret,{
+                    expiresIn: '24h'
+                });
+        
+                res.status(200).json({auth: true, token,
                     _id: user._id,
-                    id: user.userID,
                     name: user.userName,
                     email: user.email});
         }
@@ -112,10 +101,10 @@ const storage = multer.diskStorage({
 
 router.post('/signin',async(req,res)=>{
     try {
-      //  const user = await User.findOne({ email: req.body.email, });
-        const user = await User.findOne({ phoneUser: req.body.phoneUser, });
+        const user = await User.findOne({ email: req.body.email, });
+        //const user = await User.findOne({ phoneUser: req.body.phoneUser, });
         if(!user){
-            return res.status(404).send("The phone doesn't exist");
+            return res.status(404).send("The email doesn't exist");
         }
 
         const validPassword = await user.validatePassword(req.body.passWord, user.passWord);
@@ -124,12 +113,12 @@ router.post('/signin',async(req,res)=>{
             return res.status(401).send({auth: false, token: null });
         }
 
-        const token = jwt.sign({ id:user._id    }, config.secret,{
+        const token = jwt.sign({ id:user._id}, config.secret,{
             expiresIn: '24h'
         });
 
         res.status(200).json({auth: true, token,
-        id: user._id,
+        _id: user._id,
         name: user.userName,
         email: user.email,
         phoneUser: user.phoneUser});
