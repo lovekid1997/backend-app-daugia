@@ -59,7 +59,7 @@ const storage = multer.diskStorage({
                     expiresIn: '24h'
                 });
         
-                res.status(200).json({auth: true, token,
+                res.status(200).json({auth: true,token: token,
                     _id: user._id,
                     name: user.userName,
                     phoneUser: user.phoneUser});
