@@ -11,7 +11,8 @@ router.get('/:userID', function(req, res, next) {
               data:docs,
               _id : docs._id,
               name: docs.userName,
-              phone: docs.phoneUser
+              phone: docs.phoneUser,
+              test: "asd"
             });
 
     })
