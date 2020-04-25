@@ -38,11 +38,15 @@ const storage = multer.diskStorage({
 
     router.post('/signup',async(req,res) => {
         try{
-            const {userName, email , passWord} = req.body;
+            const findUser = await User.findOne({ phoneUser: req.body.phoneUser});
+
+            if(findUser){  return res.status(404).send("Số điện thoại đã được đăng ký"); }
+
+            const {userName, phoneUser , passWord} = req.body;
             //const imageUser =path.basename(req.file.path);
             const user = new User({
                 userName: req.body.userName,
-                email: req.body.email,
+                phoneUser: req.body.phoneUser,
                 passWord: req.body.passWord,
                 //imageUser : req.body.imageUser,
               //phoneUser: req.body.phoneUser
@@ -58,12 +62,12 @@ const storage = multer.diskStorage({
                 res.status(200).json({auth: true, token,
                     _id: user._id,
                     name: user.userName,
-                    email: user.email});
+                    phoneUser: user.phoneUser});
         }
         catch (e)
         {   
             console.log(e)
-            res.status(500).send('there was a problem signup');
+            res.status(500).send('Phát sinh lỗi khi đăng ký');
         }
     });
 
@@ -100,16 +104,17 @@ const storage = multer.diskStorage({
 
 router.post('/signin',async(req,res)=>{
     try {
-        const user = await User.findOne({ email: req.body.email, });
+        const user = await User.findOne({ phoneUser: req.body.phoneUser, });
         //const user = await User.findOne({ phoneUser: req.body.phoneUser, });
         if(!user){
-            return res.status(404).send("The email doesn't exist");
+            return res.status(404).send("The phone doesn't exist");
         }
 
         const validPassword = await user.validatePassword(req.body.passWord, user.passWord);
 
         if(!validPassword){
-            return res.status(401).send({auth: false, token: null });
+            // return res.status(401).send({auth: false, token: null });
+            return res.status(404).send("Sai mật khẩu");
         }
 
         const token = jwt.sign({ id:user._id}, config.secret,{

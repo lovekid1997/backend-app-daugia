@@ -9,9 +9,9 @@ router.get('/:userID', function(req, res, next) {
     .then(docs => {
             res.status(200).json({
               data:docs,
-              _id : docs.userID,
+              _id : docs._id,
               name: docs.userName,
-              email: docs.email
+              phone: docs.phoneUser
             });
 
     })
