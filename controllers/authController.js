@@ -121,10 +121,9 @@ router.post('/signin',async(req,res)=>{
             expiresIn: '24h'
         });
 
-        res.status(200).json({auth: true, token,
+        res.status(200).json({auth: true,token: token,
         _id: user._id,
         name: user.userName,
-        email: user.email,
         phoneUser: user.phoneUser});
 
     } catch (e) {
