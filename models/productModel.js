@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     idUser : {type:mongoose.Schema.Types.ObjectId},
     nameProduct: String,
     startPriceProduct: Number,
-    imageProduct: String,
+    imageProduct:[ String],
     status: String,
     description: String,
     extraTime: Number,

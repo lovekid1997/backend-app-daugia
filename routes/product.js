@@ -5,6 +5,7 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 const moment =require('moment');
+
 const storage = multer.diskStorage({
 destination: function(req,file,cb){
     cb(null,'./uploads/');
@@ -38,12 +39,11 @@ router.get('/',(req,res,next)=>{
     .exec()
     .then(docs => {
         const response = {
-            // count: docs.length,
-            image: docs[0].imageProduct,
-            product: docs
+            count: docs.length,
+            data: docs
         }
    //    if(docs.length >= 0){
-            res.status(200).json(docs);
+            res.status(200).json(response);
     //    }
         // else{
         //     res.status(404).json({
@@ -117,21 +117,30 @@ router.get('/details/productID',(req,res)=>{
 });
 
 //new product
-router.post('/new/:userID',upload.single('imageProduct'),(req,res,next)=>{
+router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
     const userID = req.params.userID;
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         idUser: userID,
         nameProduct: req.body.nameProduct,
         startPriceProduct: req.body.startPriceProduct,
-        imageProduct: path.basename(req.file.path),
+        //imageProduct: path.basename(req.files.path),
         status: req.body.status,
         description: req.body.description,
         extraTime: req.body.extraTime
     }
     );
-    
-    console.log(path.basename(product.imageProduct));
+        var filesImage = req.files;
+
+        filesImage.forEach(function(item, index, array) {
+            product.imageProduct.unshift(item.filename);
+            console.log(product.imageProduct[index]);
+      });
+
+    //product.imageProduct.concat(req.file.path);
+
+    //console.log(req.files[0].path);
+
     product.save(function(err){
         if(err){
             res.json({
