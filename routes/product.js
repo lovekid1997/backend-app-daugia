@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
-
+const moment =require('moment');
 const storage = multer.diskStorage({
 destination: function(req,file,cb){
     cb(null,'./uploads/');
@@ -102,18 +102,36 @@ router.get('/:userID',(req,res,next)=>{
     })
 });
 
+//get details product
+router.get('/details/productID',(req,res)=>{
+    const productID = req.params.productID;
+        Product.findById(productID)
+    .exec()
+    .then(docs => { res.status(200).json(docs); })
+    .catch(err=>{
+        console.log(err)
+        res.status(500).json({
+            error: err
+        })
+    });
+});
+
 //new product
-router.post('/:userID',upload.single('imageProduct'),(req,res,next)=>{
+router.post('/new/:userID',upload.single('imageProduct'),(req,res,next)=>{
     const userID = req.params.userID;
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
+        idUser: userID,
         nameProduct: req.body.nameProduct,
-        priceProduct: req.body.priceProduct,
-        imageProduct: path.basename(req.file.path)
-
+        startPriceProduct: req.body.startPriceProduct,
+        imageProduct: path.basename(req.file.path),
+        status: req.body.status,
+        description: req.body.description,
+        extraTime: req.body.extraTime
     }
     );
-    console.log(path.basename(product.imageProduct))
+    
+    console.log(path.basename(product.imageProduct));
     product.save(function(err){
         if(err){
             res.json({
@@ -121,26 +139,17 @@ router.post('/:userID',upload.single('imageProduct'),(req,res,next)=>{
                 code: 500,
                 message: err
             })
-        }
-        res.json({
-            status: 'success',
-            code: 200,
-            message: 'Register save',
-            data: product
-        })
-    })
-
-    User.findById( userID , function(err,user){
-        if(err){
+        }else{
             res.json({
-                status: 'err',
-                code: 500,
-                message: err
+                status: 'success',
+                code: 200,
+                message: 'Register save',
+                data: product,
+                hour: product.registerDate.getHours()
             })
         }
-        user.product.unshift(product._id)
-        user.save()
     })
+
 });
 
 //get one product by id

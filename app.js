@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRoutes = require('./routes/product');
-
+var categoryRoutes = require('./routes/category');
 var app = express();
 
 
@@ -41,7 +41,7 @@ app.use(require('./controllers/authController'));
 
 
 app.use('/product',productRoutes);
-
+app.use('/category',categoryRoutes);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
