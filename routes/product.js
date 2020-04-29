@@ -32,6 +32,8 @@ fileFilter: fileFilter});
 
 const Product = require('../models/productModel');
 const User = require('../models/userModel');
+const Category = require('../models/categoryModel');
+
 
 //get all
 router.get('/',(req,res,next)=>{
@@ -40,16 +42,9 @@ router.get('/',(req,res,next)=>{
     .then(docs => {
         const response = {
             count: docs.length,
-            data: docs
+            data: docs,
         }
-   //    if(docs.length >= 0){
-            res.status(200).json(response);
-    //    }
-        // else{
-        //     res.status(404).json({
-        //         message: 'not entries found'
-        //     })
-        // }
+        res.status(200).json(response);
     })
     .catch(err=>{
         console.log(err)
@@ -63,28 +58,6 @@ router.get('/',(req,res,next)=>{
 router.get('/:userID',(req,res,next)=>{
     const userID = req.params.userID;
 
-//     Product.find()
-//     .exec()
-//     .then(docs => {
-//         const response = {
-//             count: docs.length,
-//             product: docs
-//         }
-//    //    if(docs.length >= 0){
-//             res.status(200).json(response);
-//     //    }
-//         // else{
-//         //     res.status(404).json({
-//         //         message: 'not entries found'
-//         //     })
-//         // }
-//     })
-//     .catch(err=>{
-//         console.log(err)
-//         res.status(500).json({
-//             error: err
-//         })
-//     });
     User.findById( userID , function(err,user){
         if(err){
             res.json({
