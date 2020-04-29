@@ -117,11 +117,13 @@ router.get('/details/productID',(req,res)=>{
 });
 
 //new product
-router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
+router.post('/new/:userID/:productTypeID',upload.array('imageProduct',5),(req,res,next)=>{
     const userID = req.params.userID;
+    const productTypeID = req.params.productTypeID;
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         idUser: userID,
+        idProductType: productTypeID,
         nameProduct: req.body.nameProduct,
         startPriceProduct: req.body.startPriceProduct,
         //imageProduct: path.basename(req.files.path),

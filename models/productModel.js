@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const productSchema = new mongoose.Schema({
     _id : mongoose.Schema.Types.ObjectId,
     idUser : {type:mongoose.Schema.Types.ObjectId},
+    idProductType:{type:mongoose.Schema.Types.ObjectId},
     nameProduct: String,
     startPriceProduct: Number,
     imageProduct:[ String],
