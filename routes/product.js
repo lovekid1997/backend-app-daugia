@@ -58,29 +58,33 @@ router.get('/',(req,res,next)=>{
 router.get('/:userID',(req,res,next)=>{
     const userID = req.params.userID;
 
-    User.findById( userID , function(err,user){
-        if(err){
-            res.json({
-                status:'err',
-                code: 500,
-                message: err
-            })
-        }
-        res.json({
-            status: 'success',
-            code: 200,
-            message: 'Registros encontrado',
-            data: user.product
-        })
-    })
+    // Product.find( userID , function(err,product){
+    //     if(err){
+    //         res.json({
+    //             status:'err',
+    //             code: 500,
+    //             message: err
+    //         })
+    //     }
+    //     res.json({
+    //         status: 'success',
+    //         code: 200,
+    //         message: 'Registros encontrado',
+    //         data: user.product
+    //     })
+    // })
 });
 
 //get details product
-router.get('/details/productID',(req,res)=>{
+router.get('/details/:productID', (req,res)=>{
     const productID = req.params.productID;
-        Product.findById(productID)
+    Product.findById(productID)
     .exec()
-    .then(docs => { res.status(200).json(docs); })
+    .then(docs => {
+         res.status(200).json({
+             data: docs
+         }); 
+        })
     .catch(err=>{
         console.log(err)
         res.status(500).json({
