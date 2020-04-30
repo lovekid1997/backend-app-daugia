@@ -81,9 +81,7 @@ router.get('/details/:productID', (req,res)=>{
     Product.findById(productID)
     .exec()
     .then(docs => {
-         res.status(200).json({
-             data: docs
-         }); 
+         res.status(200).json(docs); 
         })
     .catch(err=>{
         console.log(err)
