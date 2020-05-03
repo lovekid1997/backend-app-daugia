@@ -108,7 +108,6 @@ router.post('/new/:userID/:productTypeID',upload.array('imageProduct',5),(req,re
     }
     );
         var filesImage = req.files;
-
         filesImage.forEach(function(item, index, array) {
             product.imageProduct.unshift(item.filename);
             console.log(product.imageProduct[index]);
