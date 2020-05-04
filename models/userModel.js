@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
     email: String,
     passWord: String,
     imageUser:String,
+    note: String,
     phoneUser:String,
+    addressUser: String,
     product: [{type:mongoose.Schema.Types.ObjectId}] ,
     create_at: {
         type: Date,
