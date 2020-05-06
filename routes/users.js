@@ -70,7 +70,9 @@ router.put('/update/:userID',upload.single('imageUser'),async(req,res) =>{
         message: "update successful"
       })
     }
-    )
+    ).catch(err => {
+      res.status(500).json({error: err});
+    })
   }).catch(err => {
     console.log(err)
         res.status(500).json({
