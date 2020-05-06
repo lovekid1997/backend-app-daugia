@@ -58,16 +58,43 @@ router.put('/update/:userID',upload.single('imageUser'),async(req,res) =>{
   const userID = req.params.userID;
   User.findById(userID).exec()
   .then(userInfo =>{
+    var file = req.file;
 
-    if(req.file.filename){
       userInfo.imageUser = req.file.filename;
-    }
-    userInfo.userName = req.body.userName;
-    userInfo.email = req.body.email;
-    userInfo.note = req.body.note;
+      userInfo.userName = req.body.userName;
+      userInfo.email = req.body.email;
+      userInfo.note = req.body.note;
+    
     userInfo.save().then(user => {
       res.status(200).json({
-        message: "update successful"
+        message: "update successful",
+        data: user
+      })
+    }
+    ).catch(err => {
+      res.status(500).json({error: err});
+    })
+  }).catch(err => {
+    console.log(err)
+        res.status(500).json({
+            error: err
+        })
+  })
+});
+
+router.put('/updatee/:userID',upload.single('imageUser'),async(req,res) =>{
+  const userID = req.params.userID;
+  User.findById(userID).exec()
+  .then(userInfo =>{
+
+      userInfo.userName = req.body.userName;
+      userInfo.email = req.body.email;
+      userInfo.note = req.body.note;
+
+    userInfo.save().then(user => {
+      res.status(200).json({
+        message: "update successful",
+        data: user
       })
     }
     ).catch(err => {
