@@ -58,9 +58,12 @@ router.put('/update/:userID',upload.single('imageUser'),async(req,res) =>{
   const userID = req.params.userID;
   User.findById(userID).exec()
   .then(userInfo =>{
+    var name = req.file.filename;
+    if(name!=null){
+      userInfo.imageUser = req.file.filename;
+    }
     userInfo.userName = req.body.userName;
     userInfo.email = req.body.email;
-    userInfo.imageUser = req.file.filename;
     userInfo.note = req.body.note;
     userInfo.save().then(user => {
       res.status(200).json({
