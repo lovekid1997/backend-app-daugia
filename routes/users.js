@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+const jwt = require('jsonwebtoken')
+const config = require('../config')
+
 const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -106,6 +109,32 @@ router.put('/updatee/:userID',upload.single('imageUser'),async(req,res) =>{
             error: err
         })
   })
+});
+
+
+//reset password
+router.put('/update/myaccount/:phoneUser',async(req,res) =>{
+  try{
+
+    const phoneUser = req.params.phoneUser;
+
+    const user = await User.findOne({ phoneUser: phoneUser });
+    //const user = await User.findOne({ phoneUser: req.body.phoneUser, });
+    if(!user){
+        return res.status(404).send("The phone doesn't exist");
+    }
+
+    user.passWord = await user.encryptPasword(req.body.passWord);
+    await user.save();
+  
+    res.status(200).json({
+      message: "update successful"
+    });
+    
+  }catch(e){
+    console.log(e)
+    res.status(500).send('Phát sinh lỗi khi reset password');
+  }
 });
 
 module.exports = router;
