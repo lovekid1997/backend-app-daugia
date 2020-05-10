@@ -128,7 +128,7 @@ router.put('/update/myaccount/:phoneUser',async(req,res) =>{
     await user.save();
   
     res.status(200).json({
-      message: "update successful"
+      message: "Success! Your Password has been changed! please login again"
     });
     
   }catch(e){
@@ -137,4 +137,23 @@ router.put('/update/myaccount/:phoneUser',async(req,res) =>{
   }
 });
 
+router.post('/checkPassword/:userID',async(req,res)=>{
+  try {
+      const userID = req.params.userID;
+      const user = await User.findById(userID);
+
+      const validPassword = await user.validatePassword(req.body.passWord, user.passWord);
+
+      if(!validPassword){
+          // return res.status(401).send({auth: false, token: null });
+          return res.status(200).send( false);
+      }else{
+        return res.status(200).send( true);
+      }
+
+  } catch (e) {
+      console.log(e)
+      res.status(500).send('xay ra loi khi check password');
+  }
+});
 module.exports = router;
