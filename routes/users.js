@@ -137,6 +137,26 @@ router.put('/update/myaccount/:phoneUser',async(req,res) =>{
   }
 });
 
+router.put('/update/myaccount/newps/:userID',async(req,res) =>{
+  try{
+
+    const userID = req.params.userID;
+
+    const user = await User.findById(userID);
+
+    user.passWord = await user.encryptPasword(req.body.passWord);
+    await user.save();
+  
+    res.status(200).json({
+      message: "Success! Your Password has been changed!"
+    });
+    
+  }catch(e){
+    console.log(e)
+    res.status(500).send('Phát sinh lỗi khi update password');
+  }
+});
+
 router.post('/checkPassword/:userID',async(req,res)=>{
   try {
       const userID = req.params.userID;
@@ -156,4 +176,5 @@ router.post('/checkPassword/:userID',async(req,res)=>{
       res.status(500).send('xay ra loi khi check password');
   }
 });
+
 module.exports = router;
