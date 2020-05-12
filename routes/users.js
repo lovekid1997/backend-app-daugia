@@ -137,6 +137,27 @@ router.put('/update/myaccount/:phoneUser',async(req,res) =>{
   }
 });
 
+router.put('/update/address/:userId',async(req,res) =>{
+  try{
+
+    const userId = req.params.userId;
+
+    const user = await User.findById(userId);
+
+    user.addressUser = await req.body.addressUser
+
+    await user.save();
+  
+    res.status(200).json({
+      message: "Success!"
+    });
+    
+  }catch(e){
+    console.log(e)
+    res.status(500).send('Phát sinh lỗi khi update address');
+  }
+});
+
 router.put('/update/myaccount/newps/:userID',async(req,res) =>{
   try{
 
