@@ -60,7 +60,9 @@ const storage = multer.diskStorage({
                 res.status(200).json({auth: true,token: token,
                     _id: user._id,
                     name: user.userName,
-                    phoneUser: user.phoneUser});
+                    phoneUser: user.phoneUser,
+                    address : user.addressUser
+                    });
         }
         catch (e)
         {   
@@ -123,7 +125,8 @@ router.post('/signin',async(req,res)=>{
         token: token,
         _id: user._id,
         name: user.userName,
-        phoneUser: user.phoneUser});
+        phoneUser: user.phoneUser,
+        address : user.addressUser});
 
     } catch (e) {
         console.log(e)

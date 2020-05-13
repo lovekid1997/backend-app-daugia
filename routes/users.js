@@ -45,7 +45,7 @@ router.get('/:userID', function(req, res, next) {
               _id : docs._id,
               name: docs.userName,
               phone: docs.phoneUser,
-              test: "asd"
+              address : docs.addressUser
             });
 
     })
@@ -146,11 +146,16 @@ router.put('/update/address/:userId',async(req,res) =>{
 
     user.addressUser = await req.body.addressUser
 
-    await user.save();
+    await user.save().then(
+      userr => {
+        res.status(200).json({
+          message: "Success!",
+          address : userr.addressUser
+        });
+      }
+    );
   
-    res.status(200).json({
-      message: "Success!"
-    });
+    
     
   }catch(e){
     console.log(e)
