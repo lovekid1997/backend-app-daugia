@@ -124,7 +124,9 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         })
     } catch (e) {
         console.log(e)
-        res.status(500).send(e);
+        res.status(500).json({
+            message : e
+        })
     }
 })
 
