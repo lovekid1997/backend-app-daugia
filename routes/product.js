@@ -100,7 +100,7 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         filesImage.forEach(function(item, index, array) {
             images.unshift(item.filename);
        });
-       var registerDate = new Date();
+       var registerDatee = Date.now();
         const product = {
         imageProduct: images,
         nameProduct: req.body.nameProduct,
@@ -110,14 +110,13 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         status: req.body.status,
         description: req.body.description,
         extraTime: req.body.extraTime,
-        registerDate : registerDate,
+        registerDate : registerDatee,   
         winner : null
         };
         
         db.ref('products/').push(product);
 
         res.status(200).json({
-            hour: product.registerDate.getHours(),
             status: 'success',
             code: 200,
             message: 'Successful',
@@ -125,7 +124,7 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         })
     } catch (e) {
         console.log(e)
-        res.status(500).send('there was a problem signin');
+        res.status(500).send(e);
     }
 })
 
