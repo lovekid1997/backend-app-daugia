@@ -148,7 +148,17 @@ rootRef.once("value")
 
 
 //get all
-router.get('/',(req,res,next)=>{
+router.get('/d',(req,res,next)=>{
+    var rootRef = db.ref('products');
+      
+    rootRef.once("value")
+    .then(function(snapshot) {
+        res.status(200).json({
+            data: snapshot.toJSON()
+       })
+    });
+});
+router.get('/c',(req,res,next)=>{
     Product.find()
     .exec()
     .then(docs => {
@@ -164,6 +174,7 @@ router.get('/',(req,res,next)=>{
             error: err
         })
     });
+
 });
 
 //get all by iduser
