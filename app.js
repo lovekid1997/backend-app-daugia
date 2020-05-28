@@ -34,6 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //     next();
 // })
 
+
+
+
 app.get('/test',function(req,res){
   res.send('<h1> hello </h1>');
 });

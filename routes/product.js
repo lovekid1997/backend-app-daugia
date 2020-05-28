@@ -43,6 +43,8 @@ admin.initializeApp({
 
 const db = admin.database();
 
+
+
 //new product
 // router.post('/new/:userID/:productTypeID',upload.array('imageProduct',5),(req,res,next)=>{
 //     const userID = req.params.userID;
@@ -132,7 +134,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
 
 router.get('/asd/:userid',(req,res,next)=>{
     const userid = req.params.userid;
-    var rootRef = db.ref('product').orderByChild('userId').equalTo(userid);
+    var rootRef = db.ref('products').orderByChild('userId')
+    .equalTo(userid);
     // rootRef.orderByChild('userId').equalTo('userid123').once("value").then(function(snapshot) {
     //     res.status(200).send(snapshot);
     //   });
@@ -140,8 +143,14 @@ router.get('/asd/:userid',(req,res,next)=>{
 rootRef.once("value")
   .then(function(snapshot) {
     var key = snapshot.key; // null
-    var childKey = snapshot.child("product").key; // "ada"
-    res.status(200).send(snapshot);
+    var childKey = snapshot.child("products").key; // "ada"
+    console.log("asd");
+    snapshot.forEach((index)=>{
+        console.log(index.val()['extraTime']);
+    });
+    console.log(snapshot.val());
+    res.status(200).json({data : snapshot,
+    });
   });
 
 });
