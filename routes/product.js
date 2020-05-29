@@ -102,6 +102,9 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         filesImage.forEach(function(item, index, array) {
             images.unshift(item.filename);
        });
+       var winner = [];
+       winner.unshift("1");
+       winner.unshift("Chưa có");
        var registerDatee = Date.now();
         const product = {
         imageProduct: images,
@@ -113,7 +116,7 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         description: req.body.description,
         extraTime: req.body.extraTime,
         registerDate : registerDatee,   
-        winner : null
+        winner : winner
         };
         
         db.ref('products/').push(product);
