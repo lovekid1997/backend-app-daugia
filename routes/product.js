@@ -116,7 +116,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         description: req.body.description,
         extraTime: req.body.extraTime,
         registerDate : registerDatee,   
-        winner : winner
+        winner : winner,
+        hide : false
         };
         
         db.ref('products/').push(product);
