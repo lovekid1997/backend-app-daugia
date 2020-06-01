@@ -62,12 +62,14 @@ router.get('/addresss/:userID', function(req, res, next) {
     .exec()
     .then(docs => {
             var c = docs.addressUser;
+            var d = true;
             if(c == null){
               c = "Bạn chưa nhập địa chỉ, hãy chọn góc trên bên phải để thêm!";
+              d = false;
             }
             res.status(200).json({
               address : c,
-              message : 'success'
+              message : d
             });
 
     })
