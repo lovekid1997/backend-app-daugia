@@ -62,7 +62,8 @@ router.get('/addresss/:userID', function(req, res, next) {
     .exec()
     .then(docs => {
             res.status(200).json({
-              address : docs.addressUser
+              address : docs.addressUser,
+              message : 'success'
             });
 
     })
