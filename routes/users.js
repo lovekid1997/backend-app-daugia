@@ -56,7 +56,23 @@ router.get('/:userID', function(req, res, next) {
         })
    });
 });
+router.get('/addresss/:userID', function(req, res, next) {
+  const userID = req.params.userID;
+ User.findById(userID)
+    .exec()
+    .then(docs => {
+            res.status(200).json({
+              address : docs.addressUser
+            });
 
+    })
+    .catch(err=>{
+        console.log(err)
+        res.status(500).json({
+            error: err
+        })
+   });
+});
 router.put('/update/:userID',upload.single('imageUser'),async(req,res) =>{
   const userID = req.params.userID;
   User.findById(userID).exec()
@@ -154,9 +170,6 @@ router.put('/update/address/:userId',async(req,res) =>{
         });
       }
     );
-  
-    
-    
   }catch(e){
     console.log(e)
     res.status(500).send('Phát sinh lỗi khi update address');
