@@ -105,6 +105,9 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
        var winner = [];
        winner.unshift("1");
        winner.unshift("Chưa có");
+
+       var played = [];
+       played.unshift("null");
        var registerDatee = Date.now();
         const product = {
         imageProduct: images,
@@ -118,7 +121,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         registerDate : registerDatee,   
         winner : winner,
         hide : false,
-        currentPrice: req.body.startPriceProduct
+        currentPrice: req.body.startPriceProduct,
+        played : played
         };
         
         db.ref('products/').push(product);
