@@ -105,7 +105,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
        var winner = [];
        winner.unshift("1");
        winner.unshift("Chưa có");
-
+         var messages = [];
+        messages.unshift("1");
        var played = [];
        played.unshift("null");
        var registerDatee = Date.now();
@@ -122,7 +123,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         winner : winner,
         hide : false,
         currentPrice: req.body.startPriceProduct,
-        played : played
+        played : played,
+        messages : messages
         };
         
         db.ref('products/').push(product);
