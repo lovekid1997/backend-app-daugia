@@ -129,7 +129,7 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         currentPrice: req.body.startPriceProduct,
         played : played
         };
-        
+
         db.ref('products/').push(product);
 
         res.status(200).json({
