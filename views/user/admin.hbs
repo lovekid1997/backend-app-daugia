@@ -149,38 +149,46 @@
 
                     <br>
                     <br>
-                
+
                     <br>
                     <h1 class="mt-4">Products</h1>
                     <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>Type</th>
+                                <th>Start Price</th>
+                                <th>End Price</th>
+                                <th>Winner</th>
+                                <th>Start Date</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
+                            {{# each data}}
+
+                             <tr>
+                                <td>{{this.nameProduct}}</td>
+                                <td>bfg</td>
                                 <td>Edinburgh</td>
-                                <td>61</td>
+                                <td>    <img  src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}" onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'" width="100px" height="100px"></td>
+                                {{!-- <td>61</td> --}}
                                 <td>2011/04/25</td>
                                 <td>$320,800</td>
                             </tr>
+
+                            {{/each}}
+
                         </tbody>
+
                         <tfoot>
                             <tr>
                                 <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>Type</th>
+                                <th>Start Price</th>
+                                <th>End Price</th>
+                                <th>Winner</th>
+                                <th>Start Date</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -220,7 +228,7 @@
                 labels: ['Thực phẩm sạch', 'Hàng nhập khẩu', 'Thời trang', 'Điện máy', 'Bất động sản', 'Xe cộ', 'Khác'],
                 datasets: [{
                     label: 'Thống kê người dùng đấu giá loại sản phẩm (people)',
-                    data: [{{ chart1 }}, {{ chart2 }}, {{ chart3 }}, {{ chart4 }}, {{ chart5 }}, {{ chart6 }}, {{chart7 }}],
+                    data: [{{ chart1 }}, {{ chart2 }}, {{ chart3 }}, {{ chart4 }}, {{ chart5 }}, {{ chart6 }}, {{ chart7 }}],
         backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',

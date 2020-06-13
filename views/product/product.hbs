@@ -121,7 +121,9 @@ $(document).ready(function() {
 
         <div id="layoutSidenav_content">
             <main>
-                       <h1>test</h1>
+                       {{# each data}}
+                            {{this.currentPrice}}
+                       {{/each}}
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">

@@ -7,15 +7,28 @@ var csrfProtection = csrf();
 
 router.use(csrfProtection);
 
-router.get('/product',isLoggedIn,function(req,res,next){
-  res.render('product/product');
+router.get('/product', isLoggedIn, function (req, res, next) {
+  var db = Firebase.database();
+  var rootRef = db.ref('products');
+  var a = [];
+  rootRef.on('value', function (dataSnapshot) {
+    dataSnapshot.forEach((index) => {
+      a.push(index.val());
+    });
+    console.log('start')
+    console.log(a);
+    res.render('product/product',
+      {
+        data: a
+      });
+  });
 });
 
 router.get('/admin', isLoggedIn, function (req, res, next) {
 
   var productId = req.params.datepick;
 
-  
+
   var db = Firebase.database();
   var rootRef = db.ref('products');
   var chart1 = [];
@@ -25,9 +38,10 @@ router.get('/admin', isLoggedIn, function (req, res, next) {
   var chart5 = [];
   var chart6 = [];
   var chart7 = [];
-
+  var a =[];
   rootRef.once("value").then(function (snapshot) {
     snapshot.forEach((index) => {
+      a.push(index.val());
       var dem = [];
 
       dem = index.val()['played'];
@@ -78,7 +92,8 @@ router.get('/admin', isLoggedIn, function (req, res, next) {
       chart4: chart4.length,
       chart5: chart5.length,
       chart6: chart6.length,
-      chart7: chart7.length
+      chart7: chart7.length,
+      data: a
     });
   });
 
