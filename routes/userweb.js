@@ -4,7 +4,7 @@ var csrf = require('csurf');
 var passport = require('passport');
 var Firebase = require('firebase-admin');
 var csrfProtection = csrf();
-
+var moment = require('moment');
 router.use(csrfProtection);
 
 router.get('/product', isLoggedIn, function (req, res, next) {
@@ -15,8 +15,6 @@ router.get('/product', isLoggedIn, function (req, res, next) {
     dataSnapshot.forEach((index) => {
       a.push(index.val());
     });
-    console.log('start')
-    console.log(a);
     res.render('product/product',
       {
         data: a
@@ -49,37 +47,36 @@ router.get('/admin', isLoggedIn, function (req, res, next) {
       if (index.val()['nameProductType'] == "Thực phẩm sạch") {
         console.log('start');
         dem.forEach(function (item, index) {
-          console.log(item);
           chart1.push(item);
         });
       } else if (index.val()['nameProductType'] == "Hàng nhập khẩu") {
         dem.forEach(function (item, index) {
-          console.log(item);
+
           chart2.push(item);
         });
       } else if (index.val()['nameProductType'] == "Thời trang") {
         dem.forEach(function (item, index) {
-          console.log(item);
+
           chart3.push(item);
         });
       } else if (index.val()['nameProductType'] == "Điện máy") {
         dem.forEach(function (item, index) {
-          console.log(item);
+
           chart4.push(item);
         });
       } else if (index.val()['nameProductType'] == "Bất động sản") {
         dem.forEach(function (item, index) {
-          console.log(item);
+
           chart5.push(item);
         });
       } else if (index.val()['nameProductType'] == "Xe cộ") {
         dem.forEach(function (item, index) {
-          console.log(item);
+
           chart6.push(item);
         });
       } else if (index.val()['nameProductType'] == "Khác") {
         dem.forEach(function (item, index) {
-          console.log(item);
+
           chart7.push(item);
         });
       }
