@@ -4,7 +4,6 @@ var csrf = require('csurf');
 var passport = require('passport');
 var Firebase = require('firebase-admin');
 var csrfProtection = csrf();
-var moment = require('moment');
 router.use(csrfProtection);
 
 router.get('/product', isLoggedIn, function (req, res, next) {
