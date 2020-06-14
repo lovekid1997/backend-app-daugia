@@ -6,14 +6,51 @@ var Firebase = require('firebase-admin');
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
+router.get('/product/detail/:_id',isLoggedIn,function(req,res,next){
+  const idProduct = req.params._id;
+
+  var db = Firebase.database();
+  var rootRef = db.ref('products');
+  rootRef.orderByKey().equalTo(idProduct).once("value").then(function(dataSnapshot){
+    var item;
+    dataSnapshot.forEach((itemm)=>{
+      item = itemm.val();
+    });
+    res.render('product/detail',{
+      data: item
+    });
+  });
+
+});
+
 router.get('/product', isLoggedIn, function (req, res, next) {
   var db = Firebase.database();
   var rootRef = db.ref('products');
   var a = [];
   rootRef.on('value', function (dataSnapshot) {
-    dataSnapshot.forEach((index) => {
-      a.push(index.val());
+
+    dataSnapshot.forEach(function(index){
+      var key = index.key;
+      a.push({
+        imageProduct: index.val()['imageProduct'],
+        nameProduct: index.val()['nameProduct'],
+        userId : index.val()['userId'],
+        nameProductType: index.val()['nameProductType'],
+        startPriceProduct: index.val()['startPriceProduct'],
+        status: index.val()['status'],
+        description: index.val()['description'],
+        extraTime: index.val()['extraTime'],
+        registerDate : index.val()['registerDate'],   
+        winner : index.val()['winner'],
+        hide : index.val()['hide'],
+        currentPrice: index.val()['currentPrice'],
+        played : index.val()['played'],
+        _id: key
+      });
+      // console.log(key);
     });
+
+
     res.render('product/product',
       {
         data: a
@@ -22,7 +59,7 @@ router.get('/product', isLoggedIn, function (req, res, next) {
 });
 
 router.get('/admin', isLoggedIn, function (req, res, next) {
-
+  var idd = "5ea4528ccaf1ab0017e0fe22";
   var productId = req.params.datepick;
 
 
@@ -38,7 +75,24 @@ router.get('/admin', isLoggedIn, function (req, res, next) {
   var a =[];
   rootRef.once("value").then(function (snapshot) {
     snapshot.forEach((index) => {
-      a.push(index.val());
+      var key = index.key;
+      a.push({
+        imageProduct: index.val()['imageProduct'],
+        nameProduct: index.val()['nameProduct'],
+        userId : index.val()['userId'],
+        nameProductType: index.val()['nameProductType'],
+        startPriceProduct: index.val()['startPriceProduct'],
+        status: index.val()['status'],
+        description: index.val()['description'],
+        extraTime: index.val()['extraTime'],
+        registerDate : index.val()['registerDate'],   
+        winner : index.val()['winner'],
+        hide : index.val()['hide'],
+        currentPrice: index.val()['currentPrice'],
+        played : index.val()['played'],
+        id: key
+      });
+
       var dem = [];
 
       dem = index.val()['played'];
@@ -89,7 +143,8 @@ router.get('/admin', isLoggedIn, function (req, res, next) {
       chart5: chart5.length,
       chart6: chart6.length,
       chart7: chart7.length,
-      data: a
+      data: a,
+      admin: "5ea4528ccaf1ab0017e0fe22"
     });
   });
 
@@ -105,21 +160,6 @@ router.get('/logout', function (req, res, next) {
 router.use('/', notLoggedIn, function (req, res, next) {
   next();
 });
-
-// router.get('/signup', function (req, res, next) {
-//   var messages = req.flash('error');
-//   res.render('user/signup', {
-//     csrfToken: req.csrfToken(),
-//     messages: messages,
-//     hasErrors: messages.length > 0
-//   });
-// });
-
-// router.post('/signup', passport.authenticate('local.signup', {
-//   successRedirect: '/user/profile',
-//   failureRedirect: '/user/signup',
-//   failureFlash: true
-// }));
 
 
 router.get('/signin', function (req, res, next) {
@@ -139,6 +179,20 @@ router.post('/signin', passport.authenticate('local.signin', {
 }));
 
 
+// router.get('/signup', function (req, res, next) {
+//   var messages = req.flash('error');
+//   res.render('user/signup', {
+//     csrfToken: req.csrfToken(),
+//     messages: messages,
+//     hasErrors: messages.length > 0
+//   });
+// });
+
+// router.post('/signup', passport.authenticate('local.signup', {
+//   successRedirect: '/user/profile',
+//   failureRedirect: '/user/signup',
+//   failureFlash: true
+// }));
 
 
 

@@ -9,7 +9,6 @@
     <meta name="author" content="" />
     <title>Admin</title>
     <link href="/stylesheets/css/styles.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
         crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"
@@ -19,23 +18,12 @@
         src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#example').DataTable({
-                "columns": [
-                    { "data": "name" },
-                    { "data": "position" },
-                    { "data": "office" },
-                    { "data": "age" },
-                    { "data": "start_date" },
-                    { "data": "salary" }
-                ]
-            });
-        });
+            $("#datepick").datepicker();
+        });​
     </script>
 
     <link rel="stylesheet" type="text/css"
         href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
-
-
 
 </head>
 
@@ -71,7 +59,7 @@
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Menu</div>
-                          <a class="nav-link" href="/user/product">
+                        <a class="nav-link" href="/user/product">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Product
                         </a>
@@ -95,86 +83,32 @@
                 </div>
             </nav>
         </div>
-
+        <style>
+                table.tableez{
+                     margin-top:10px;
+                }
+                h1.h{
+                    margin-top:50px;
+                }
+        </style>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    {{!-- timkiem --}}
-                    <aside class="widget">
-                        <p>Date: <input type="text" id="datepick"></p>
-                    </aside>
-                    {{!-- <p>Date: <input type="text" id="datepick"></p> --}}
-
-                    <canvas id="myChart" width="400" height="200"></canvas>
-
-                    <br>
-                    <br>
-
-                    <br>
-                    <h1 class="mt-4">Products</h1>
-
-                    <table id="example" class="display" style="width:100%">
-                        <thead>
+                    <h1 class="h">Detail Product</h1>
+                    <div  >
+                        <table class="tableez" cellpadding="5" cellspacing="0" style="width:350px" >
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Start Price</th>
-                                <th>End Price</th>
-                                <th>Winner</th>
-                                <th>Start Date</th>
+                                <td>Tên sản phẩm: </td>
+                                <td>Smith</td>
                             </tr>
-                        </thead>
-
-                        <tbody>
-                            {{# each data}}
-                           
-                             <tr  onclick="window.location.href = '/user/product/detail/{{this.id}}';" >
-                                
-                                <td >{{this.nameProduct}}</td>
-
-                                <td>{{this.nameProductType}}</td>   
-                                <td id="{{this.extraTime}}" ></td>
-                                <td>    <img  src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}" onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'" width="100px" height="100px"></td>
-                               
-                                <td >{{this.winner.[0] }}</td>
-                                <td id="{{this.registerDate}}"></td>
-                            </tr>
-
-                             <script>
-                                 
-                                var a =  {{this.startPriceProduct}};
-                                function formatMoney(number) {
-                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
-                                }
-                                document.getElementById({{this.extraTime}}).innerHTML = formatMoney(a);
-                         
-                            </script>   
-
-                            <script>
-                                var d = new Date({{this.registerDate}}).toLocaleString();
-                                document.getElementById({{this.registerDate}}).innerHTML = d;
-                            </script>
-
-
-                            {{/each}}
-
-                        </tbody>
-
-                        <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Start Price</th>
-                                <th>End Price</th>
-                                <th>Winner</th>
-                                <th>Start Date</th>
+                                <td>Eve</td>
+                                <td>Jackson</td>
                             </tr>
-                        </tfoot>
-                    </table>
+                        </table>
+                    </div>
+
+
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
@@ -192,7 +126,6 @@
         </div>
     </div>
 
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
@@ -203,48 +136,7 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="assets/demo/datatables-demo.js"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Thực phẩm sạch', 'Hàng nhập khẩu', 'Thời trang', 'Điện máy', 'Bất động sản', 'Xe cộ', 'Khác'],
-                datasets: [{
-                    label: 'Thống kê người dùng đấu giá loại sản phẩm (people)',
-                    data: [{{ chart1 }}, {{ chart2 }}, {{ chart3 }}, {{ chart4 }}, {{ chart5 }}, {{ chart6 }}, {{ chart7 }}],
-        backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-        ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-                borderWidth: 1
-                }]
-            },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-        });
-    </script>
-
 
 </body>
-
 
 </html>
