@@ -8,7 +8,7 @@ var session = require('express-session');
 var passport = require('passport');
 var flash =  require('connect-flash');
 var validator = require('express-validator');
-
+var csrf = require('csurf');
 var indexRouter = require('./routes/index');
 var usersWebRouter = require('./routes/userweb');
 var usersRouter = require('./routes/users');
@@ -38,6 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 app.use(function(req, res, next) {

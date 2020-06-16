@@ -1,23 +1,124 @@
 var express = require('express');
 var router = express.Router();
-var csrf = require('csurf');
 var passport = require('passport');
 var Firebase = require('firebase-admin');
-var csrfProtection = csrf();
-router.use(csrfProtection);
 
-router.get('/product/detail/:_id',isLoggedIn,function(req,res,next){
+var csrf = require('csurf');
+var csrfProtection = csrf();
+
+//router.use(csrfProtection);
+
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    cb(null, true);
+  }
+  else { cb(null, false); }
+
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
+
+
+
+router.post('/product/uploadsI/:_id', function (req, res, next) {
+  const idProduct = req.params._id;
+  console.log('asdasdasdasdsad');
+  // var filesImage = req.files;
+  // var images = [];
+  // filesImage.forEach(function (item, index, array) {
+  //   images.unshift(item.filename);
+  // });
+  var db = Firebase.database();
+  var rootRef = db.ref('products');
+  rootRef.child("/" + idProduct).update(
+    {
+      imageProduct: images
+    }
+  );
+  res.redirect('/user/product/edit/' + idProduct);
+});
+
+router.post('/product/edit/:_id', upload.array('imageProduct', 5), isLoggedIn, function (req, res, next) {
+  const idProduct = req.params._id;
+  const name = req.body.nameProduct;
+  const type = req.body.cars;
+  const status = req.body.status;
+  const description = req.body.description;
+  const currentPrice = req.body.currentPrice;
+  console.log('zxczxczxczc');
+    var filesImage = req.files;
+    var images = [];
+    filesImage.forEach(function(item, index, array) {
+        images.unshift(item.filename);
+   });
+  var db = Firebase.database();
+  var rootRef = db.ref('products');
+  rootRef.child("/" + idProduct).update(
+    {
+      nameProduct: name,
+      nameProductType: type,
+      status: status,
+      description: description,
+      currentPrice: currentPrice,
+      imageProduct: images
+    }
+  );
+  res.redirect('/user/product/detail/' + idProduct);
+});
+
+router.get('/product/edit/:_id', isLoggedIn, function (req, res, next) {
   const idProduct = req.params._id;
 
   var db = Firebase.database();
   var rootRef = db.ref('products');
-  rootRef.orderByKey().equalTo(idProduct).once("value").then(function(dataSnapshot){
+  rootRef.orderByKey().equalTo(idProduct).once("value").then(function (dataSnapshot) {
     var item;
-    dataSnapshot.forEach((itemm)=>{
+    var key
+    dataSnapshot.forEach((itemm) => {
       item = itemm.val();
+      key = itemm.key;
     });
-    res.render('product/detail',{
-      data: item
+    res.render('product/edit', {
+      //csrfToken: req.csrfToken(),
+      data: item,
+      id: key
+    });
+  });
+
+});
+
+router.get('/product/detail/:_id', isLoggedIn, function (req, res, next) {
+  const idProduct = req.params._id;
+
+  var db = Firebase.database();
+  var rootRef = db.ref('products');
+  rootRef.orderByKey().equalTo(idProduct).once("value").then(function (dataSnapshot) {
+    var item;
+    var key
+    dataSnapshot.forEach((itemm) => {
+      item = itemm.val();
+      key = itemm.key;
+    });
+    res.render('product/detail', {
+      data: item,
+      id: key
     });
   });
 
@@ -29,23 +130,23 @@ router.get('/product', isLoggedIn, function (req, res, next) {
   var a = [];
   rootRef.on('value', function (dataSnapshot) {
 
-    dataSnapshot.forEach(function(index){
+    dataSnapshot.forEach(function (index) {
       var key = index.key;
       a.push({
         imageProduct: index.val()['imageProduct'],
         nameProduct: index.val()['nameProduct'],
-        userId : index.val()['userId'],
+        userId: index.val()['userId'],
         nameProductType: index.val()['nameProductType'],
         startPriceProduct: index.val()['startPriceProduct'],
         status: index.val()['status'],
         description: index.val()['description'],
         extraTime: index.val()['extraTime'],
-        registerDate : index.val()['registerDate'],   
-        winner : index.val()['winner'],
-        hide : index.val()['hide'],
+        registerDate: index.val()['registerDate'],
+        winner: index.val()['winner'],
+        hide: index.val()['hide'],
         currentPrice: index.val()['currentPrice'],
-        played : index.val()['played'],
-        _id: key
+        played: index.val()['played'],
+        id: key
       });
       // console.log(key);
     });
@@ -72,24 +173,24 @@ router.get('/admin', isLoggedIn, function (req, res, next) {
   var chart5 = [];
   var chart6 = [];
   var chart7 = [];
-  var a =[];
+  var a = [];
   rootRef.once("value").then(function (snapshot) {
     snapshot.forEach((index) => {
       var key = index.key;
       a.push({
         imageProduct: index.val()['imageProduct'],
         nameProduct: index.val()['nameProduct'],
-        userId : index.val()['userId'],
+        userId: index.val()['userId'],
         nameProductType: index.val()['nameProductType'],
         startPriceProduct: index.val()['startPriceProduct'],
         status: index.val()['status'],
         description: index.val()['description'],
         extraTime: index.val()['extraTime'],
-        registerDate : index.val()['registerDate'],   
-        winner : index.val()['winner'],
-        hide : index.val()['hide'],
+        registerDate: index.val()['registerDate'],
+        winner: index.val()['winner'],
+        hide: index.val()['hide'],
         currentPrice: index.val()['currentPrice'],
-        played : index.val()['played'],
+        played: index.val()['played'],
         id: key
       });
 
@@ -165,7 +266,7 @@ router.use('/', notLoggedIn, function (req, res, next) {
 router.get('/signin', function (req, res, next) {
   var messages = req.flash('error');
   res.render('user/signin', {
-    csrfToken: req.csrfToken(),
+    //csrfToken: req.csrfToken(),
     messages: messages,
     hasErrors: messages.length > 0
   });

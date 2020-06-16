@@ -115,33 +115,41 @@ $(document).ready(function() {
                             </tr>
                         </thead>
 
+                       
                         <tbody>
                             {{# each data}}
-                             <tr  onclick="window.location.href = '/product/detail';">
-                                <td>{{this.nameProduct}}</td>
-                                <td>{{this.nameProductType}}</td>
+                           
+                             <tr  onclick="window.location.href = '/user/product/detail/{{this.id}}';" >
+                                
+                                <td >{{this.nameProduct}}</td>
+
+                                <td>{{this.nameProductType}}</td>   
                                 <td id="{{this.extraTime}}" ></td>
                                 <td>    <img  src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}" onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'" width="100px" height="100px"></td>
-                                {{!-- <td>61</td> --}}
+                               
                                 <td >{{this.winner.[0] }}</td>
                                 <td id="{{this.registerDate}}"></td>
                             </tr>
+
                              <script>
+                                 
                                 var a =  {{this.startPriceProduct}};
-                                console.log(a);
                                 function formatMoney(number) {
                                 return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                                 }
                                 document.getElementById({{this.extraTime}}).innerHTML = formatMoney(a);
+                         
                             </script>   
+
                             <script>
                                 var d = new Date({{this.registerDate}}).toLocaleString();
                                 document.getElementById({{this.registerDate}}).innerHTML = d;
                             </script>
+
+
                             {{/each}}
 
                         </tbody>
-
                         <tfoot>
                             <tr>
                                 <th>Name</th>
