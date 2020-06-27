@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+const mongoose = require('mongoose');
 var Firebase = require('firebase-admin');
-
-var csrf = require('csurf');
-var csrfProtection = csrf();
+const path = require('path');
+//var csrf = require('csurf');
+//var csrfProtection = csrf();
 
 //router.use(csrfProtection);
 
@@ -34,25 +35,118 @@ const upload = multer({
   },
   fileFilter: fileFilter
 });
+const User = require('../models/userModel');
+// coinst db = Firebase.database();
+// var rootRef = db.ref('products');
+router.get('/product/detail/user/:id', isLoggedIn, function (req, res, next) {
+  const idProduct = req.params.id;
+  User.findById(idProduct)
+    .lean()
+    .then(docs => {
+      console.log('start');
+      console.log(docs.create_at);
+      var date = new Date(docs.create_at);
+      
+      var a = date.getUTCDate()+"/" + date.getUTCMonth() +"/"+date.getUTCFullYear() + "  " + date.getUTCHours()
+      +":"+date.getUTCMinutes()+":"+date.getUTCMilliseconds();
+
+      var d = new Date(date.getTime()).toLocaleString();
+      console.log(a);
+      console.log(date.toLocaleString());
+      res.render('product/detailUser', {
+        data: docs,date: d
+      });
+    })  
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
+    });
 
 
+});
 
-router.post('/product/uploadsI/:_id', function (req, res, next) {
-  const idProduct = req.params._id;
-  console.log('asdasdasdasdsad');
-  // var filesImage = req.files;
-  // var images = [];
-  // filesImage.forEach(function (item, index, array) {
-  //   images.unshift(item.filename);
+router.post('/product/remove/:id', isLoggedIn, function (req, res, next) {
+
+  const idProduct = req.params.id;
+  var db = Firebase.database();
+  var rootRef = db.ref('products/' + idProduct);
+  rootRef.remove();
+  res.redirect('/user/product');
+});
+
+router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, function (req, res, next) {
+
+  var idd = "5ea4528ccaf1ab0017e0fe22";
+  var filesImage = req.files;
+  var images = [];
+  filesImage.forEach(function (item, index, array) {
+    images.unshift(item.filename);
+  });
+  var winner = [];
+  winner.unshift("1");
+  winner.unshift("Chưa có");
+  //  var messages = [];
+  // messages.unshift({
+  //     a : "qwe",
+  //     b : "asdq"
   // });
+
+  var played = [];
+  played.unshift("null");
+  var registerDatee = Date.now();
+  var time = req.body.time;
+  console.log(time);
+  const product = {
+    imageProduct: images,
+    nameProduct: req.body.nameProduct,
+    userId: idd,
+    nameProductType: req.body.cars,
+    startPriceProduct: req.body.currentPrice,
+    status: req.body.status,
+    description: req.body.description,
+    extraTime: req.body.time,
+    registerDate: registerDatee,
+    winner: winner,
+    hide: false,
+    currentPrice: req.body.currentPrice,
+    played: played
+  };
   var db = Firebase.database();
   var rootRef = db.ref('products');
-  rootRef.child("/" + idProduct).update(
-    {
-      imageProduct: images
-    }
-  );
-  res.redirect('/user/product/edit/' + idProduct);
+  rootRef.push(product);
+  res.redirect('/user/product');
+
+});
+
+// router.get('/asd/:userid', (req, res, next) => {
+//   const userid = req.params.userid;
+//   var rootRef = db.ref('products').orderByChild('userId')
+//     .equalTo(userid);
+//   // rootRef.orderByChild('userId').equalTo('userid123').once("value").then(function(snapshot) {
+//   //     res.status(200).send(snapshot);
+//   //   });
+
+//   rootRef.once("value")
+//     .then(function (snapshot) {
+//       var key = snapshot.key; // null
+//       var childKey = snapshot.child("products").key; // "ada"
+//       console.log("asd");
+//       snapshot.forEach((index) => {
+//         console.log(index.val()['extraTime']);
+//       });
+//       console.log(snapshot.val());
+//       res.status(200).json({
+//         data: snapshot,
+//       });
+//     });
+//   res.redirect('/user/product/add');
+// });
+
+
+router.get('/product/add', isLoggedIn, function (req, res, next) {
+  res.render('product/add');
 });
 
 router.post('/product/edit/:_id', upload.array('imageProduct', 5), isLoggedIn, function (req, res, next) {
@@ -63,11 +157,11 @@ router.post('/product/edit/:_id', upload.array('imageProduct', 5), isLoggedIn, f
   const description = req.body.description;
   const currentPrice = req.body.currentPrice;
   console.log('zxczxczxczc');
-    var filesImage = req.files;
-    var images = [];
-    filesImage.forEach(function(item, index, array) {
-        images.unshift(item.filename);
-   });
+  var filesImage = req.files;
+  var images = [];
+  filesImage.forEach(function (item, index, array) {
+    images.unshift(item.filename);
+  });
   var db = Firebase.database();
   var rootRef = db.ref('products');
   rootRef.child("/" + idProduct).update(
@@ -128,7 +222,7 @@ router.get('/product', isLoggedIn, function (req, res, next) {
   var db = Firebase.database();
   var rootRef = db.ref('products');
   var a = [];
-  rootRef.on('value', function (dataSnapshot) {
+  rootRef.once('value', function (dataSnapshot) {
 
     dataSnapshot.forEach(function (index) {
       var key = index.key;

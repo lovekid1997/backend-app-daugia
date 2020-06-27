@@ -100,111 +100,97 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="h">Detail Product</h1>
-                    <div>
-                        <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
-                            <tr>
-                                {{# each data.imageProduct}}
-                                <td><img src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this }}"
-                                        onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
-                                        width="200px" height="200px"></td>
-                                {{/each}}
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Tên sản phẩm: </td>
-                                <td class="tdtd">{{data.nameProduct}}</td>
-                            </tr>
+                
+                    <form action="/user/product/addd" method="POST" enctype="multipart/form-data" >
+                        <h1 class="h">Add Product</h1>
+                        <div>
+                            <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
+                                <tr>
+                
+                                    <div class="form-group">
+                                        <input type="file" name="imageProduct" multiple>
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <td class="tdtitle">Tên sản phẩm: </td>
+                                    <td><input type="text" value="{{data.nameProduct}}" name="nameProduct"
+                                            id="nameProduct">
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td class="tdtitle">Thể loại:</td>
-                                <td class="tdtd">{{data.nameProductType}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Trạng thái: </td>
-                                <td class="tdtd">{{data.status}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Mô tả: </td>
-                                <td class="tdtd">{{data.description}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Giá khởi điểm: </td>
-                                <td class="tdtd" id="giakhoidiem"></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Người thắng cuộc: </td>
-                                <td class="tdtd">{{data.winner.[0]}}</td>
-                                <td><button onclick="document.location = '/user/product/detail/user/{{data.winner.[1]}}'" class="btn btn-primary" >Xem </button></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Giá thắng cuộc: </td>
-                                <td class="tdtd" id="giaketthuc">{{data.startPriceProduct}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Thời gian bắt đầu đấu giá: </td>
-                                <td class="tdtd" id="registerDate"></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Thời gian kết thúc: </td>
-                                <td class="tdtd" id="extraTime"></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Đã kết thúc: </td>
-                                <td class="tdtd">{{data.hide}}</td>
-                            </tr>
+                                <tr>
+                                    <td class="tdtitle">Thể loại:</td>
+                                    <td id="rrr">
+                                        <select name="cars" id="cars">
+                                            <option value="Thực phẩm sạch">Thực phẩm sạch</option>
+                                            <option value="Hàng nhập khẩu">Hàng nhập khẩu</option>
+                                            <option value="Thời trang">Thời trang</option>
+                                            <option value="Điện máy">Điện máy</option>
+                                            <option value="Bất động sản">Bất động sản</option>
+                                            <option value="Xe cộ">Xe cộ</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </td>
 
-                        </table>
+                                </tr>
 
-                        <script>
-                            var a = {{ data.currentPrice }};
-                            function formatMoney(number) {
-                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
-                            }
-                            document.getElementById("giakhoidiem").innerHTML = formatMoney(a);
-                        </script>
-                        <script>
-                            var a = {{ data.startPriceProduct }};
-                            function formatMoney(number) {
-                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
-                            }
-                            document.getElementById("giaketthuc").innerHTML = formatMoney(a);
-                        </script>
-                        <script>
-                            var d = new Date({{ data.registerDate }}).toLocaleString();
-                            document.getElementById("registerDate").innerHTML = d;
-                        </script>
-                        <script>
-                            var d = new Date({{ data.extraTime }}).toLocaleString();
-                            document.getElementById("extraTime").innerHTML = d;
-                        </script>
-                    </div>
-                    <br>
+                                <tr>
+                                    <td class="tdtitle">Trạng thái: </td>
+                                    <td><input type="text" value="{{data.status}}" name="status" id="status">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdtitle">Mô tả: </td>
+                                    <td><input type="text" value="{{data.description}}" name="description"
+                                            id="description">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdtitle">Giá khởi điểm: </td>
+                                    <td><input type="text" value="{{data.currentPrice}}" name="currentPrice"
+                                            id="giakhoidiem">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdtitle">Thời gian kết thúc: </td>
+                                    <td> <select name="time" id="time">
+                                            <option value="2">2h</option>
+                                            <option value="4">4h</option>
+                                            <option value="6">6h</option>
+                                            <option value="8">8h</option>
+                                            <option value="10">10h</option>
+                                        </select> </td>
+                                </tr>
+                            </table>
 
-                    <table>
-                        <tr>
-                            <th> <button type="button" onclick="document.location = '/user/product'"
-                                    class="btn btn-secondary">Quay
-                                    Lại</button></th>
-                            <th>
-                                <form action="/user/product/remove/{{id}}" onsubmit="return validateForm()" method="POST">
-                                    <button  onclick="myFunction()" type="submit" class="btn btn-danger">Xóa</button>
-                                </form>
-                            </th>
-                            <th> <button type="button" onclick="document.location = '/user/product/edit/{{id}}'"
-                                    class="btn btn-primary">Sửa</button></th>
-                        </tr>
-                        <script>
-                            function validateForm() {
-                                var r = confirm("Bạn có muốn xóa sản phẩm này?");
-                                if (r == true) {
-                                    return true;
-                                } else {
-                                    return false;
+                            {{!-- <script>
+                                var a = {{ data.currentPrice }};
+                                function formatMoney(number) {
+                                    return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                                 }
-                                
-                            }
-                        </script>
-                    </table>
+                                document.getElementById("giakhoidiem").innerHTML = formatMoney(a);
+                            </script>
+                            <script>
+                                var a = {{ data.startPriceProduct }};
+                                function formatMoney(number) {
+                                    return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
+                                }
+                                document.getElementById("giaketthuc").innerHTML = formatMoney(a);
+                            </script>
+                            <script>
+                                var d = new Date({{ data.registerDate }}).toLocaleString();
+                                document.getElementById("registerDate").innerHTML = d;
+                            </script>
+                            <script>
+                                var d = new Date({{ data.extraTime }}).toLocaleString();
+                                document.getElementById("extraTime").innerHTML = d;
+                            </script> --}}
+                        </div>
+                         <button type="button" onclick="document.location = '/user/product'"
+                            class="btn btn-secondary">Quay Lại</button>
+
+                        <button type="submit" class="btn btn-primary">Thêm</button>
+                    </form>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
