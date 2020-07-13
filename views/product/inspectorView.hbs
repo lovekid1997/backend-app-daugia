@@ -63,10 +63,12 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Product
                         </a>
+
                         <a class="nav-link" href="/user/product/inspector">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
-                        </a>                        
+                        </a>
+
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
                             aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -104,67 +106,70 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="h">Thông tin người thắng cuộc</h1>
+                    <h1 class="h">Detail Inspector</h1>
                     <div>
                         <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
                             <tr>
-
-                                <td><img src="https://api-backend-daugia-2.herokuapp.com/imageUser/{{ data.imageUser }}"
+                                {{# each data.imageProduct}}
+                                <td><img src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this }}"
                                         onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
                                         width="200px" height="200px"></td>
-
+                                {{/each}}
                             </tr>
                             <tr>
-                                <td class="tdtitle">Tên người dùng: </td>
-                                <td class="tdtd">{{data.userName}}</td>
-                            </tr>
-
-                            <tr>
-                                <td class="tdtitle">Email:</td>
-                                <td class="tdtd">{{data.email}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Phone: </td>
-                                <td class="tdtd">{{data.phoneUser}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Ngày tạo tài khoản: </td>
-                                <td id="extraTimee" class="tdtd">{{date}}</td>
+                                <td class="tdtitle">Tên sản phẩm: </td>
+                                <td class="tdtd">{{data.nameProduct}}</td>
                             </tr>
 
-                            <td class="tdtitle">Thời gian kết thúc: </td>
-                            <td class="tdtd"></td>
+                            <tr>
+                                <td class="tdtitle">Thể loại:</td>
+                                <td class="tdtd">{{data.nameProductType}}</td>
                             </tr>
                             <tr>
-                                <td class="tdtitle">Đã kết thúc: </td>
-                                <td class="tdtd">{{data.hide}}</td>
+                                <td class="tdtitle">Trạng thái: </td>
+                                <td class="tdtd">{{data.status}}</td>
                             </tr>
+                            <tr>
+                                <td class="tdtitle">Mô tả: </td>
+                                <td class="tdtd">{{data.description}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tdtitle">Giá khởi điểm: </td>
+                                <td class="tdtd" id="giakhoidiem"></td>
+                            </tr>
+
 
                         </table>
 
                         <script>
-                            datee = new Date({{data.create_at}});
-                            year = date.getFullYear();
-                            month = date.getMonth() + 1;
-                            dt = date.getDate();
-
-                            if (dt < 10) {
-                                dt = '0' + dt;
+                            var a = {{ data.currentPrice }};
+                            function formatMoney(number) {
+                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                             }
-                            if (month < 10) {
-                                month = '0' + month;
+                            document.getElementById("giakhoidiem").innerHTML = formatMoney(a);
+                        </script>
+                        <script>
+                            var a = {{ data.startPriceProduct }};
+                            function formatMoney(number) {
+                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                             }
-                            var z = year + '-' + month + '-' + dt;
-                          
-                            var date = new Date({{data.create_at}})
-                            document.getElementById("extraTimee").innerHTML =date;
+                            document.getElementById("giaketthuc").innerHTML = formatMoney(a);
+                        </script>
+                        <script>
+                            var d = new Date({{ data.registerDate }}).toLocaleString();
+                            document.getElementById("registerDate").innerHTML = d;
+                        </script>
+                        <script>
+                            var d = new Date({{ data.extraTime }}).toLocaleString();
+                            document.getElementById("extraTime").innerHTML = d;
                         </script>
                     </div>
                     <br>
 
                     <table>
                         <tr>
-                            <th> <button type="button" onclick="goBack()" class="btn btn-secondary">Quay
+                            <th> <button type="button" onclick="document.location = '/user/product/inspector'"
+                                    class="btn btn-secondary">Quay
                                     Lại</button></th>
                             <th>
                                 <form action="/user/product/remove/{{id}}" onsubmit="return validateForm()"
@@ -172,23 +177,26 @@
                                     <button onclick="myFunction()" type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
                             </th>
-                            <th> <button type="button" onclick="document.location = '/user/product/edit/{{id}}'"
+                            <th> <button type="button"
+                                    onclick="document.location = '/user/product/inspector/view/edit/{{id}}'"
                                     class="btn btn-primary">Sửa</button></th>
+                            <th>
+                                <form action="/user/product/inspector/success/{{id}}" method="POST" enctype="multipart/form-data">
+                                    <button type="submit"
+                        
+                                        class="btn btn-success">Duyệt</button>
+                                </form>
+                            </th>
                         </tr>
                         <script>
                             function validateForm() {
-                                var r = confirm("Press a button!");
+                                var r = confirm("Bạn có muốn xóa sản phẩm này?");
                                 if (r == true) {
                                     return true;
                                 } else {
                                     return false;
                                 }
 
-                            }
-                        </script>
-                        <script>
-                            function goBack() {
-                                window.history.back();
                             }
                         </script>
                     </table>

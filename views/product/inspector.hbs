@@ -63,10 +63,12 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Product
                         </a>
+
                         <a class="nav-link" href="/user/product/inspector">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
-                        </a>                        
+                        </a>
+
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
                             aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -103,95 +105,28 @@
         </style>
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid">
-                    <h1 class="h">Thông tin người thắng cuộc</h1>
-                    <div>
-                        <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
-                            <tr>
+                <div class="container-fluid" style="padding-top: 30px;">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action active">
+                            Chưa kiểm duyệt
+                        </a>
+                        {{# each data}}
+                        <a href="/user/product/inspector/view/{{id}}" class="list-group-item list-group-item-action"><strong>Tên SP:</strong>
+                            {{this.nameProduct}},<strong>Mô tả:</strong> {{this.description}}
 
-                                <td><img src="https://api-backend-daugia-2.herokuapp.com/imageUser/{{ data.imageUser }}"
-                                        onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
-                                        width="200px" height="200px"></td>
 
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Tên người dùng: </td>
-                                <td class="tdtd">{{data.userName}}</td>
-                            </tr>
+                            <form action="/user/product/inspector/success/{{id}}" method="POST">
+                                <button style="margin-left: 60%;"
+                                    onclick="document.location = '/user/product/inspector/view/{{id}}'" type="button"
+                                    class="btn btn-info">Xem</button>
+                                <button type="submit" class="btn btn-primary">Duyệt</button>
+                            </form>
 
-                            <tr>
-                                <td class="tdtitle">Email:</td>
-                                <td class="tdtd">{{data.email}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Phone: </td>
-                                <td class="tdtd">{{data.phoneUser}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Ngày tạo tài khoản: </td>
-                                <td id="extraTimee" class="tdtd">{{date}}</td>
-                            </tr>
+                        </a>
+                        {{/each}}
 
-                            <td class="tdtitle">Thời gian kết thúc: </td>
-                            <td class="tdtd"></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Đã kết thúc: </td>
-                                <td class="tdtd">{{data.hide}}</td>
-                            </tr>
-
-                        </table>
-
-                        <script>
-                            datee = new Date({{data.create_at}});
-                            year = date.getFullYear();
-                            month = date.getMonth() + 1;
-                            dt = date.getDate();
-
-                            if (dt < 10) {
-                                dt = '0' + dt;
-                            }
-                            if (month < 10) {
-                                month = '0' + month;
-                            }
-                            var z = year + '-' + month + '-' + dt;
-                          
-                            var date = new Date({{data.create_at}})
-                            document.getElementById("extraTimee").innerHTML =date;
-                        </script>
+                        <a href="#" class="list-group-item list-group-item-action disabled">end</a>
                     </div>
-                    <br>
-
-                    <table>
-                        <tr>
-                            <th> <button type="button" onclick="goBack()" class="btn btn-secondary">Quay
-                                    Lại</button></th>
-                            <th>
-                                <form action="/user/product/remove/{{id}}" onsubmit="return validateForm()"
-                                    method="POST">
-                                    <button onclick="myFunction()" type="submit" class="btn btn-danger">Xóa</button>
-                                </form>
-                            </th>
-                            <th> <button type="button" onclick="document.location = '/user/product/edit/{{id}}'"
-                                    class="btn btn-primary">Sửa</button></th>
-                        </tr>
-                        <script>
-                            function validateForm() {
-                                var r = confirm("Press a button!");
-                                if (r == true) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-
-                            }
-                        </script>
-                        <script>
-                            function goBack() {
-                                window.history.back();
-                            }
-                        </script>
-                    </table>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">

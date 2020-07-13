@@ -104,94 +104,105 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="h">Thông tin người thắng cuộc</h1>
-                    <div>
-                        <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
-                            <tr>
 
-                                <td><img src="https://api-backend-daugia-2.herokuapp.com/imageUser/{{ data.imageUser }}"
-                                        onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
-                                        width="200px" height="200px"></td>
+                    <form action="/user/product/inspector/view/edit/{{id}}"  method="POST" enctype="multipart/form-data">
 
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Tên người dùng: </td>
-                                <td class="tdtd">{{data.userName}}</td>
-                            </tr>
+                           <input type="hidden" name="_csrf" value={{csrfToken}}>
 
-                            <tr>
-                                <td class="tdtitle">Email:</td>
-                                <td class="tdtd">{{data.email}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Phone: </td>
-                                <td class="tdtd">{{data.phoneUser}}</td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Ngày tạo tài khoản: </td>
-                                <td id="extraTimee" class="tdtd">{{date}}</td>
-                            </tr>
+                        {{!-- <form method="post" action="/?_csrf=<%=csrfToken%>"  --}}
+                        <h1 class="h">Edit Inspector</h1>
 
-                            <td class="tdtitle">Thời gian kết thúc: </td>
-                            <td class="tdtd"></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Đã kết thúc: </td>
-                                <td class="tdtd">{{data.hide}}</td>
-                            </tr>
+                        <div>
+                            <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
+                   
+                                    <tr>
+                                        <div class="form-group">
+                                            <input type="file" name="imageProduct" multiple>
+                                        </div>
+                                    </tr>
+                              
+                                <tr>
+                                    {{# each data.imageProduct}}
+                                    <td><img src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this }}"
+                                            onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
+                                            width="200px" height="200px"></td>
+                                    {{/each}}
+                                </tr>
+                                <tr>
 
-                        </table>
+                                    <td class="tdtitle">Tên sản phẩm: </td>
+                                    <td><input type="text" value="{{data.nameProduct}}" name="nameProduct"
+                                            id="nameProduct">
+                                    </td>
+                                </tr>
 
-                        <script>
-                            datee = new Date({{data.create_at}});
-                            year = date.getFullYear();
-                            month = date.getMonth() + 1;
-                            dt = date.getDate();
+                                <tr>
+                                    <td class="tdtitle">Thể loại:</td>
+                                    <td id="rrr">
+                                        <select name="cars" id="cars">
+                                            <option value="Thực phẩm sạch">Thực phẩm sạch</option>
+                                            <option value="Hàng nhập khẩu">Hàng nhập khẩu</option>
+                                            <option value="Thời trang">Thời trang</option>
+                                            <option value="Điện máy">Điện máy</option>
+                                            <option value="Bất động sản">Bất động sản</option>
+                                            <option value="Xe cộ">Xe cộ</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </td>
 
-                            if (dt < 10) {
-                                dt = '0' + dt;
-                            }
-                            if (month < 10) {
-                                month = '0' + month;
-                            }
-                            var z = year + '-' + month + '-' + dt;
-                          
-                            var date = new Date({{data.create_at}})
-                            document.getElementById("extraTimee").innerHTML =date;
-                        </script>
-                    </div>
-                    <br>
+                                </tr>
 
-                    <table>
-                        <tr>
-                            <th> <button type="button" onclick="goBack()" class="btn btn-secondary">Quay
-                                    Lại</button></th>
-                            <th>
-                                <form action="/user/product/remove/{{id}}" onsubmit="return validateForm()"
-                                    method="POST">
-                                    <button onclick="myFunction()" type="submit" class="btn btn-danger">Xóa</button>
-                                </form>
-                            </th>
-                            <th> <button type="button" onclick="document.location = '/user/product/edit/{{id}}'"
-                                    class="btn btn-primary">Sửa</button></th>
-                        </tr>
-                        <script>
-                            function validateForm() {
-                                var r = confirm("Press a button!");
-                                if (r == true) {
-                                    return true;
-                                } else {
-                                    return false;
+                                <tr>
+                                    <td class="tdtitle">Trạng thái: </td>
+                                    <td><input type="text" value="{{data.status}}" name="status" id="status">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdtitle">Mô tả: </td>
+                                    <td><input type="text" value="{{data.description}}" name="description"
+                                            id="description">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdtitle">Giá khởi điểm: </td>
+                                    <td><input type="text" value="{{data.currentPrice}}" name="currentPrice"
+                                            id="giakhoidiem">
+                                    </td>
+                                </tr>
+                        
+
+                            </table>
+
+                            <script>
+                                var a = {{ data.currentPrice }};
+                                function formatMoney(number) {
+                                    return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                                 }
+                                document.getElementById("giakhoidiem").innerHTML = formatMoney(a);
+                            </script>
+                            <script>
+                                var a = {{ data.startPriceProduct }};
+                                function formatMoney(number) {
+                                    return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
+                                }
+                                document.getElementById("giaketthuc").innerHTML = formatMoney(a);
+                            </script>
+                            <script>
+                                var d = new Date({{ data.registerDate }}).toLocaleString();
+                                document.getElementById("registerDate").innerHTML = d;
+                            </script>
+                            <script>
+                                var d = new Date({{ data.extraTime }}).toLocaleString();
+                                document.getElementById("extraTime").innerHTML = d;
+                            </script>
+                        </div>
+                        <br>
+                        <button type="button" onclick="document.location = '/user/product/inspector/view/{{id}}'"
+                            class="btn btn-secondary">Quay Lại</button>
 
-                            }
-                        </script>
-                        <script>
-                            function goBack() {
-                                window.history.back();
-                            }
-                        </script>
-                    </table>
+                        <button type="submit" class="btn btn-primary">Sửa</button>
+                       
+                    </form>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
