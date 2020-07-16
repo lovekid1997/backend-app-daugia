@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     phoneUser:String,
     addressUser: String,
     product: [{type:mongoose.Schema.Types.ObjectId}] ,
+    uytin: String,
     create_at: {
         type: Date,
         default: Date.now
