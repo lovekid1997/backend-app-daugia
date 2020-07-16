@@ -129,7 +129,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         currentPrice: req.body.startPriceProduct,
         played : played,
         inspector : false,
-        uyTin: req.body.uyTin
+        uyTin: req.body.uyTin,
+        fcmtoken: req.body.fcmtoken
         };
 
         db.ref('products/').push(product);
