@@ -128,7 +128,8 @@ router.post('/signin',async(req,res)=>{
         _id: user._id,
         name: user.userName,
         phoneUser: user.phoneUser,
-        address : user.addressUser});
+        address : user.addressUser,
+        uytin: user.uytin});
 
     } catch (e) {
         console.log(e)
