@@ -128,7 +128,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         hide : false,
         currentPrice: req.body.startPriceProduct,
         played : played,
-        inspector : false
+        inspector : false,
+        fcmtoken : req.body.fcmtoken
         };
 
         db.ref('products/').push(product);
