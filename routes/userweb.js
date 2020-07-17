@@ -264,7 +264,8 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
     hide: false,
     currentPrice: req.body.currentPrice,
     played: played,
-    inspector : false
+    inspector : false,
+    fcmtoken: "cfNA8tQT-7A:APA91bFdIhmLRtQ09peSpwbQumhuS_Y9RdVTuWMtDBB5VsjkroB220fPwvakRBrF6dnBPh28YD3wpm_W3e9uSo0hYaLETSFaOMe6WrfbGCyWUvzXRO2K8HOybloGPZVOWim6Q_XjvLTP"
   };
   var db = Firebase.database();
   var rootRef = db.ref('products');
