@@ -182,6 +182,28 @@ router.put('/update/address/:userId',async(req,res) =>{
     res.status(500).send('Phát sinh lỗi khi update address');
   }
 });
+router.put('/update/uytin/:userId',async(req,res) =>{
+  try{
+
+    const userId = req.params.userId;
+
+    const user = await User.findById(userId);
+
+    user.uytin = await req.body.uytin;
+
+    await user.save().then(
+      userr => {
+        res.status(200).json({
+          message: "Success!",
+          uytin : userr.uytin
+        });
+      }
+    );
+  }catch(e){
+    console.log(e)
+    res.status(500).send('Phát sinh lỗi khi update address');
+  }
+});
 
 router.put('/update/myaccount/newps/:userID',async(req,res) =>{
   try{
