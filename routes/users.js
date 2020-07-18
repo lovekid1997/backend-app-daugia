@@ -219,9 +219,8 @@ router.put('/update/conguytin/:userId',async(req,res) =>{
     var uytin = user.uytin;
     var newUytin = parseInt(uytin) ;
     if(newUytin == 10){
-      res.status(200).json({
-        message: "Success!"
-      });
+
+      return;
     }
     newUytin = newUytin + 1;
     user.uytin = newUytin.toString();
