@@ -189,7 +189,10 @@ router.put('/update/uytin/:userId',async(req,res) =>{
 
     const user = await User.findById(userId);
 
-    user.uytin = await req.body.uytin;
+    var uytin = user.uytin;
+    var newUytin = parseInt(uytin) - 1;
+
+    user.uytin = newUytin.toString();
 
     await user.save().then(
       userr => {
