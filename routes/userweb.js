@@ -39,6 +39,44 @@ const User = require('../models/userModel');
 // coinst db = Firebase.database();
 // var rootRef = db.ref('products');
 
+router.get('/manager/details/:_id', isLoggedIn, function (req, res, next) {
+  var idProduct = req.params._id;
+  var listUser = [];
+  User.findById(idProduct)
+  .lean()
+  .then(docs => {
+    var date = new Date(docs.create_at);
+    var d = new Date(date.getTime()).toLocaleString();
+      res.render('product/usermanagerDetails',{
+        data: docs, date: d
+      });
+      
+  });
+
+});
+
+
+router.get('/manager', isLoggedIn, function (req, res, next) {
+
+  var listUser = [];
+  User.find()
+  .lean()
+  .then(docs => {
+      docs.forEach(function(index){
+          listUser.push(index);
+      });
+
+      res.render('product/usermanager',{
+        data: listUser,
+        message: "message"
+      });
+
+  });
+
+
+
+});
+
 router.post('/product/inspector/view/edit/:_id', upload.array('imageProduct', 5), isLoggedIn, function (req, res, next) {
   const idProduct = req.params._id;
   const name = req.body.nameProduct;
@@ -54,7 +92,7 @@ router.post('/product/inspector/view/edit/:_id', upload.array('imageProduct', 5)
   });
   var db = Firebase.database();
   var rootRef = db.ref('products');
-  if(images[0] != null){
+  if (images[0] != null) {
     rootRef.child("/" + idProduct).update(
       {
         nameProduct: name,
@@ -65,7 +103,7 @@ router.post('/product/inspector/view/edit/:_id', upload.array('imageProduct', 5)
         imageProduct: images
       }
     );
-  }else{
+  } else {
     rootRef.child("/" + idProduct).update(
       {
         nameProduct: name,
@@ -80,18 +118,18 @@ router.post('/product/inspector/view/edit/:_id', upload.array('imageProduct', 5)
   res.redirect('/user/product/inspector/view/' + idProduct);
 });
 
-router.post('/product/inspector/success/:_id',  isLoggedIn, function (req, res, next) {
+router.post('/product/inspector/success/:_id', isLoggedIn, function (req, res, next) {
   var idProduct = req.params._id;
 
   var db = Firebase.database();
   var rootRef = db.ref('products');
 
-    rootRef.child("/" + idProduct).update(
-      {
-        inspector: true
-      }
-    );
-      console.log('asd');
+  rootRef.child("/" + idProduct).update(
+    {
+      inspector: true
+    }
+  );
+  console.log('asd');
   res.redirect('/user/product/inspector');
 });
 
@@ -179,17 +217,17 @@ router.get('/product/detail/user/:id', isLoggedIn, function (req, res, next) {
       console.log('start');
       console.log(docs.create_at);
       var date = new Date(docs.create_at);
-      
-      var a = date.getUTCDate()+"/" + date.getUTCMonth() +"/"+date.getUTCFullYear() + "  " + date.getUTCHours()
-      +":"+date.getUTCMinutes()+":"+date.getUTCMilliseconds();
+
+      var a = date.getUTCDate() + "/" + date.getUTCMonth() + "/" + date.getUTCFullYear() + "  " + date.getUTCHours()
+        + ":" + date.getUTCMinutes() + ":" + date.getUTCMilliseconds();
       var d = new Date(date.getTime()).toLocaleString();
       console.log("hoang minh giam");
       console.log(date.toLocaleString());
       res.render('product/detailUser', {
-        data: docs,date: d
+        data: docs, date: d
       });
 
-    })  
+    })
     .catch(err => {
       console.log(err)
       res.status(500).json({
@@ -215,9 +253,9 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
 
   var filesImage = req.files;
   var images = [];
-  filesImage.forEach(function(item, index, array) {
-      images.unshift(item.filename);
- });
+  filesImage.forEach(function (item, index, array) {
+    images.unshift(item.filename);
+  });
   var winner = [];
   winner.unshift("1");
   winner.unshift("Chưa có");
@@ -247,7 +285,7 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
   //   played : played
   //   };
   var time = req.body.time;
-  if(req.body.time == 2){
+  if (req.body.time == 2) {
     time = (parseInt(Date.now()) + 7200000).toString();
   }
   const product = {
@@ -264,8 +302,8 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
     hide: false,
     currentPrice: req.body.currentPrice,
     played: played,
-    inspector : false,
-    uyTin : req.body.uytin,
+    inspector: false,
+    uyTin: req.body.uytin,
     fcmtoken: "cfNA8tQT-7A:APA91bFdIhmLRtQ09peSpwbQumhuS_Y9RdVTuWMtDBB5VsjkroB220fPwvakRBrF6dnBPh28YD3wpm_W3e9uSo0hYaLETSFaOMe6WrfbGCyWUvzXRO2K8HOybloGPZVOWim6Q_XjvLTP"
   };
   var db = Firebase.database();
@@ -295,7 +333,7 @@ router.post('/product/edit/:_id', upload.array('imageProduct', 5), isLoggedIn, f
   });
   var db = Firebase.database();
   var rootRef = db.ref('products');
-  if(images[0] != null){
+  if (images[0] != null) {
     rootRef.child("/" + idProduct).update(
       {
         nameProduct: name,
@@ -306,7 +344,7 @@ router.post('/product/edit/:_id', upload.array('imageProduct', 5), isLoggedIn, f
         imageProduct: images
       }
     );
-  }else{
+  } else {
     rootRef.child("/" + idProduct).update(
       {
         nameProduct: name,

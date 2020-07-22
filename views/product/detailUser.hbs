@@ -66,19 +66,11 @@
                         <a class="nav-link" href="/user/product/inspector">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
-                        </a>                        
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
-                            aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
-                            data-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="layout-static.html">Static
-                                    Navigation</a><a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
-                        </div>
+                        <a class="nav-link" href="/user/manager">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Customer Management
+                        </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -124,26 +116,28 @@
                                 <td class="tdtd">{{data.email}}</td>
                             </tr>
                             <tr>
-                                <td class="tdtitle">Phone: </td>
+                                <td class="tdtitle">Số điện thoại: </td>
                                 <td class="tdtd">{{data.phoneUser}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tdtitle">Địa chỉ: </td>
+                                <td class="tdtd">{{data.addressUser}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tdtitle">Uy tín: </td>
+                                <td class="tdtd">{{data.uytin}}</td>
                             </tr>
                             <tr>
                                 <td class="tdtitle">Ngày tạo tài khoản: </td>
                                 <td id="extraTimee" class="tdtd">{{date}}</td>
                             </tr>
 
-                            <td class="tdtitle">Thời gian kết thúc: </td>
-                            <td class="tdtd"></td>
-                            </tr>
-                            <tr>
-                                <td class="tdtitle">Đã kết thúc: </td>
-                                <td class="tdtd">{{data.hide}}</td>
-                            </tr>
+
 
                         </table>
 
                         <script>
-                            datee = new Date({{data.create_at}});
+                            datee = new Date({{ data.create_at }});
                             year = date.getFullYear();
                             month = date.getMonth() + 1;
                             dt = date.getDate();
@@ -155,9 +149,9 @@
                                 month = '0' + month;
                             }
                             var z = year + '-' + month + '-' + dt;
-                          
-                            var date = new Date({{data.create_at}})
-                            document.getElementById("extraTimee").innerHTML =date;
+
+                            var date = new Date({{ data.create_at }})
+                            document.getElementById("extraTimee").innerHTML = date;
                         </script>
                     </div>
                     <br>
@@ -166,14 +160,14 @@
                         <tr>
                             <th> <button type="button" onclick="goBack()" class="btn btn-secondary">Quay
                                     Lại</button></th>
-                            <th>
+                            {{!-- <th>
                                 <form action="/user/product/remove/{{id}}" onsubmit="return validateForm()"
                                     method="POST">
                                     <button onclick="myFunction()" type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
                             </th>
                             <th> <button type="button" onclick="document.location = '/user/product/edit/{{id}}'"
-                                    class="btn btn-primary">Sửa</button></th>
+                                    class="btn btn-primary">Sửa</button></th> --}}
                         </tr>
                         <script>
                             function validateForm() {
