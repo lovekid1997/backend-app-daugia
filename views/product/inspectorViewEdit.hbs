@@ -66,8 +66,12 @@
                         <a class="nav-link" href="/user/product/inspector">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
-                        </a>                        
-                         <a class="nav-link" href="/user/manager">
+                        </a>
+                        <a class="nav-link" href="/user/order/0">
+                            <div class="sb-nav-link-icon"><i class="fas fa-stream"></i></div>
+                            Order
+                        </a>
+                        <a class="nav-link" href="/user/manager">
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Customer Management
                         </a>
@@ -97,22 +101,22 @@
             <main>
                 <div class="container-fluid">
 
-                    <form action="/user/product/inspector/view/edit/{{id}}"  method="POST" enctype="multipart/form-data">
+                    <form action="/user/product/inspector/view/edit/{{id}}" method="POST" enctype="multipart/form-data">
 
-                           <input type="hidden" name="_csrf" value={{csrfToken}}>
+                        <input type="hidden" name="_csrf" value={{csrfToken}}>
 
                         {{!-- <form method="post" action="/?_csrf=<%=csrfToken%>"  --}}
                         <h1 class="h">Edit Inspector</h1>
 
                         <div>
                             <table class="tableez" cellpadding="4" cellspacing="0" style="width:400px">
-                   
-                                    <tr>
-                                        <div class="form-group">
-                                            <input type="file" name="imageProduct" multiple>
-                                        </div>
-                                    </tr>
-                              
+
+                                <tr>
+                                    <div class="form-group">
+                                        <input type="file" name="imageProduct" multiple>
+                                    </div>
+                                </tr>
+
                                 <tr>
                                     {{# each data.imageProduct}}
                                     <td><img src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this }}"
@@ -161,7 +165,7 @@
                                             id="giakhoidiem">
                                     </td>
                                 </tr>
-                        
+
 
                             </table>
 
@@ -193,7 +197,7 @@
                             class="btn btn-secondary">Quay Lại</button>
 
                         <button type="submit" class="btn btn-primary">Sửa</button>
-                       
+
                     </form>
                 </div>
             </main>

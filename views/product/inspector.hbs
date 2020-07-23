@@ -68,7 +68,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
                         </a>
-                         <a class="nav-link" href="/user/manager">
+                        <a class="nav-link" href="/user/order/0">
+                            <div class="sb-nav-link-icon"><i class="fas fa-stream"></i></div>
+                            Order
+                        </a>
+                        <a class="nav-link" href="/user/manager">
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Customer Management
                         </a>
@@ -102,7 +106,8 @@
                             Chưa kiểm duyệt
                         </a>
                         {{# each data}}
-                        <a href="/user/product/inspector/view/{{id}}" class="list-group-item list-group-item-action"><strong>Tên SP:</strong>
+                        <a href="/user/product/inspector/view/{{id}}"
+                            class="list-group-item list-group-item-action"><strong>Tên SP:</strong>
                             {{this.nameProduct}},<strong>Mô tả:</strong> {{this.description}}
 
 

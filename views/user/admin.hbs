@@ -71,7 +71,7 @@
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Menu</div>
-                          <a class="nav-link" href="/user/product">
+                        <a class="nav-link" href="/user/product">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Product
                         </a>
@@ -79,7 +79,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
                         </a>
-                         <a class="nav-link" href="/user/manager">
+                        <a class="nav-link" href="/user/order/0">
+                            <div class="sb-nav-link-icon"><i class="fas fa-stream"></i></div>
+                            Order
+                        </a>
+                        <a class="nav-link" href="/user/manager">
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Customer Management
                         </a>
@@ -127,32 +131,35 @@
 
                         <tbody>
                             {{# each data}}
-                           
-                             <tr  onclick="window.location.href = '/user/product/detail/{{this.id}}';" >
-                                
-                                <td >{{this.nameProduct}}</td>
 
-                                <td>{{this.nameProductType}}</td>   
-                                <td id="{{this.extraTime}}" ></td>
-                                <td>    <img  src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}" onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'" width="100px" height="100px"></td>
-                               
-                                <td >{{this.winner.[0] }}</td>
+                            <tr onclick="window.location.href = '/user/product/detail/{{this.id}}';">
+
+                                <td>{{this.nameProduct}}</td>
+
+                                <td>{{this.nameProductType}}</td>
+                                <td id="{{this.extraTime}}"></td>
+                                <td> <img
+                                        src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}"
+                                        onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
+                                        width="100px" height="100px"></td>
+
+                                <td>{{this.winner.[0] }}</td>
                                 <td id="{{this.registerDate}}"></td>
                             </tr>
 
-                             <script>
-                                 
-                                var a =  {{this.currentPrice}};
+                            <script>
+
+                                var a = {{ this.currentPrice }};
                                 function formatMoney(number) {
-                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
+                                    return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                                 }
-                                document.getElementById({{this.extraTime}}).innerHTML = formatMoney(a);
-                         
-                            </script>   
+                                document.getElementById({{ this.extraTime }}).innerHTML = formatMoney(a);
+
+                            </script>
 
                             <script>
-                                var d = new Date({{this.registerDate}}).toLocaleString();
-                                document.getElementById({{this.registerDate}}).innerHTML = d;
+                                var d = new Date({{ this.registerDate }}).toLocaleString();
+                                document.getElementById({{ this.registerDate }}).innerHTML = d;
                             </script>
 
 
@@ -207,7 +214,7 @@
                 labels: ['Thực phẩm sạch', 'Hàng nhập khẩu', 'Thời trang', 'Điện máy', 'Bất động sản', 'Xe cộ', 'Khác'],
                 datasets: [{
                     label: 'Thống kê người dùng đấu giá loại sản phẩm (people)',
-                    data: [{{ chart1 }}, {{ chart2 }}, {{ chart3 }}, {{ chart4 }}, {{ chart5 }}, {{ chart6 }}, {{ chart7 }}],
+                    data: [{{ chart1 }}, {{ chart2 }}, {{ chart3 }}, { { chart4 } }, { { chart5 } }, { { chart6 } }, { { chart7 } }],
         backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',

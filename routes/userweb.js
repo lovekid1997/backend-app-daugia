@@ -39,6 +39,13 @@ const User = require('../models/userModel');
 // coinst db = Firebase.database();
 // var rootRef = db.ref('products');
 
+router.get('/order/:id', isLoggedIn, function (req, res, next) {
+ 
+      res.render('product/order'
+      );
+});
+
+
 router.get('/manager/details/:_id', isLoggedIn, function (req, res, next) {
   var idProduct = req.params._id;
   var listUser = [];

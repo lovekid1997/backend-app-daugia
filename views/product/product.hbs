@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,17 +13,19 @@
         crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"
         crossorigin="anonymous"></script>
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-  <script>
-$(document).ready(function() {
-    $("#datepick").datepicker();
-});​
-</script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript"
+        src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#datepick").datepicker();
+        });​
+    </script>
 
- <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
+    <link rel="stylesheet" type="text/css"
+        href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
 
-<script>
+    <script>
         $(document).ready(function () {
             $('#example').DataTable({
                 "columns": [
@@ -73,15 +74,19 @@ $(document).ready(function() {
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Menu</div>
-                          <a class="nav-link" href="/user/product">
+                        <a class="nav-link" href="/user/product">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Product
                         </a>
-                         <a class="nav-link" href="/user/product/inspector">
+                        <a class="nav-link" href="/user/product/inspector">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Inspector
-                        </a>                       
-                         <a class="nav-link" href="/user/manager">
+                        </a>
+                        <a class="nav-link" href="/user/order/0">
+                            <div class="sb-nav-link-icon"><i class="fas fa-stream"></i></div>
+                            Order
+                        </a>
+                        <a class="nav-link" href="/user/manager">
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Customer Management
                         </a>
@@ -96,9 +101,10 @@ $(document).ready(function() {
 
         <div id="layoutSidenav_content">
             <main>
-                  <div class="container-fluid">
+                <div class="container-fluid">
                     <br>
-                    <button type="button" onclick="document.location = '/user/product/add'" class="btn btn-success">Add</button>
+                    <button type="button" onclick="document.location = '/user/product/add'"
+                        class="btn btn-success">Add</button>
                     <h1 class="mt-4">Products</h1>
                     <table id="example" class="display" style="width:100%">
                         <thead>
@@ -112,35 +118,38 @@ $(document).ready(function() {
                             </tr>
                         </thead>
 
-                       
+
                         <tbody>
                             {{# each data}}
-                           
-                             <tr  onclick="window.location.href = '/user/product/detail/{{this.id}}';" >
-                                
-                                <td >{{this.nameProduct}}</td>
 
-                                <td>{{this.nameProductType}}</td>   
-                                <td id="{{this.extraTime}}" ></td>
-                                <td>    <img  src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}" onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'" width="100px" height="100px"></td>
-                               
-                                <td >{{this.winner.[0] }}</td>
+                            <tr onclick="window.location.href = '/user/product/detail/{{this.id}}';">
+
+                                <td>{{this.nameProduct}}</td>
+
+                                <td>{{this.nameProductType}}</td>
+                                <td id="{{this.extraTime}}"></td>
+                                <td> <img
+                                        src="https://api-backend-daugia-2.herokuapp.com/uploads/{{ this.imageProduct.[0] }}"
+                                        onerror="this.onerror=null; this.src='https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg'"
+                                        width="100px" height="100px"></td>
+
+                                <td>{{this.winner.[0] }}</td>
                                 <td id="{{this.registerDate}}"></td>
                             </tr>
 
-                             <script>
-                                 
-                                var a =  {{this.startPriceProduct}};
+                            <script>
+
+                                var a = {{ this.startPriceProduct }};
                                 function formatMoney(number) {
-                                return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
+                                    return number.toLocaleString('VI', { style: 'currency', currency: 'VND' });
                                 }
-                                document.getElementById({{this.extraTime}}).innerHTML = formatMoney(a);
-                         
-                            </script>   
+                                document.getElementById({{ this.extraTime }}).innerHTML = formatMoney(a);
+
+                            </script>
 
                             <script>
-                                var d = new Date({{this.registerDate}}).toLocaleString();
-                                document.getElementById({{this.registerDate}}).innerHTML = d;
+                                var d = new Date({{ this.registerDate }}).toLocaleString();
+                                document.getElementById({{ this.registerDate }}).innerHTML = d;
                             </script>
 
 
@@ -174,7 +183,7 @@ $(document).ready(function() {
             </footer>
         </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
@@ -187,4 +196,5 @@ $(document).ready(function() {
     <script src="assets/demo/datatables-demo.js"></script>
 
 </body>
+
 </html>
