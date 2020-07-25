@@ -4,6 +4,7 @@ var passport = require('passport');
 const mongoose = require('mongoose');
 var Firebase = require('firebase-admin');
 const path = require('path');
+var nodemailer = require('nodemailer');
 //var csrf = require('csurf');
 //var csrfProtection = csrf();
 
@@ -39,23 +40,52 @@ const User = require('../models/userModel');
 // coinst db = Firebase.database();
 // var rootRef = db.ref('products');
 
-router.post('/order',isLoggedIn, function (req, res, next) {
+// router.post('/sendemail', function (req, res, next) {
+
+//   var a = req.body.message;
+//   console.log(a);
+  
+//   var transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//       user: 'infohappj@gmail.com',
+//       pass: 'wearegreate'
+//     }
+//   });
+//   var mailOption = {
+//     from: 'infohappj@gmail.com',
+//     to: 'beminhquan3@gmail.com',
+//     subject: 'Test',
+//     text: 'It work'
+//   };
+
+//   // transporter.sendMail(mailOption, function (err, data) {
+//   //   if (err) {
+//   //     console.log('err')
+//   //   } else {
+//   //     console.log('Email sent!!!');
+//   //   }
+//   // });
+//   res.end(a);
+// });
+
+router.post('/order',  function (req, res, next) {
   var time = req.body.ngay;
   res.redirect('/user/order/' + time);
 });
 
-router.get('/order/:ngay',isLoggedIn, function (req, res, next) {
+router.get('/order/:ngay', function (req, res, next) {
   var message = "";
-  
+
   var ngay = req.params.ngay;
 
   var myDate = ngay.split("-");
   var newDate = myDate[1] + "/" + myDate[2] + "/" + myDate[0];
 
   var dayy = new Date(newDate);
-  if(ngay.toString().length == 1){
+  if (ngay.toString().length == 1) {
     message = "Vui lòng submit ngày";
-  }else{
+  } else {
     message = "Đang chọn " + newDate;
   }
   var today = Date.now();
@@ -65,7 +95,7 @@ router.get('/order/:ngay',isLoggedIn, function (req, res, next) {
   rootRef.once("value").then(function (data) {
     var thatbai = [];
     var thanhcong = [];
-    var all =[];
+    var all = [];
     var all2 = [];
     data.forEach(function (index) {
       if (parseInt(today) < parseInt(index.val()['extraTime'])) {
@@ -80,45 +110,9 @@ router.get('/order/:ngay',isLoggedIn, function (req, res, next) {
 
         if (dayy.getTime() == dateF.getTime()) {
           var key = index.key;
-          if(data.child(key+"/failure").exists()){
-              if(index.val()['failure']){
-                thatbai.push({
-                  imageProduct: index.val()['imageProduct'],
-                  nameProduct: index.val()['nameProduct'],
-                  userId: index.val()['userId'],
-                  nameProductType: index.val()['nameProductType'],
-                  startPriceProduct: index.val()['startPriceProduct'],
-                  status: index.val()['status'],
-                  description: index.val()['description'],
-                  extraTime: index.val()['extraTime'],
-                  registerDate: index.val()['registerDate'],
-                  winner: index.val()['winner'],
-                  hide: index.val()['hide'],
-                  currentPrice: index.val()['currentPrice'],
-                  played: index.val()['played'],
-                  failure : index.val()['failure'],
-                  id: key
-                });
-              }else{
-                thanhcong.push({
-                  imageProduct: index.val()['imageProduct'],
-                  nameProduct: index.val()['nameProduct'],
-                  userId: index.val()['userId'],
-                  nameProductType: index.val()['nameProductType'],
-                  startPriceProduct: index.val()['startPriceProduct'],
-                  status: index.val()['status'],
-                  description: index.val()['description'],
-                  extraTime: index.val()['extraTime'],
-                  registerDate: index.val()['registerDate'],
-                  winner: index.val()['winner'],
-                  hide: index.val()['hide'],
-                  currentPrice: index.val()['currentPrice'],
-                  failure : index.val()['failure'],
-                  played: index.val()['played'],
-                  id: key
-                });
-              }
-              all.push({
+          if (data.child(key + "/failure").exists()) {
+            if (index.val()['failure']) {
+              thatbai.push({
                 imageProduct: index.val()['imageProduct'],
                 nameProduct: index.val()['nameProduct'],
                 userId: index.val()['userId'],
@@ -131,11 +125,47 @@ router.get('/order/:ngay',isLoggedIn, function (req, res, next) {
                 winner: index.val()['winner'],
                 hide: index.val()['hide'],
                 currentPrice: index.val()['currentPrice'],
-                failure : index.val()['failure'],
+                played: index.val()['played'],
+                failure: index.val()['failure'],
+                id: key
+              });
+            } else {
+              thanhcong.push({
+                imageProduct: index.val()['imageProduct'],
+                nameProduct: index.val()['nameProduct'],
+                userId: index.val()['userId'],
+                nameProductType: index.val()['nameProductType'],
+                startPriceProduct: index.val()['startPriceProduct'],
+                status: index.val()['status'],
+                description: index.val()['description'],
+                extraTime: index.val()['extraTime'],
+                registerDate: index.val()['registerDate'],
+                winner: index.val()['winner'],
+                hide: index.val()['hide'],
+                currentPrice: index.val()['currentPrice'],
+                failure: index.val()['failure'],
                 played: index.val()['played'],
                 id: key
               });
-          }else{
+            }
+            all.push({
+              imageProduct: index.val()['imageProduct'],
+              nameProduct: index.val()['nameProduct'],
+              userId: index.val()['userId'],
+              nameProductType: index.val()['nameProductType'],
+              startPriceProduct: index.val()['startPriceProduct'],
+              status: index.val()['status'],
+              description: index.val()['description'],
+              extraTime: index.val()['extraTime'],
+              registerDate: index.val()['registerDate'],
+              winner: index.val()['winner'],
+              hide: index.val()['hide'],
+              currentPrice: index.val()['currentPrice'],
+              failure: index.val()['failure'],
+              played: index.val()['played'],
+              id: key
+            });
+          } else {
             all2.push({
               imageProduct: index.val()['imageProduct'],
               nameProduct: index.val()['nameProduct'],
@@ -156,14 +186,20 @@ router.get('/order/:ngay',isLoggedIn, function (req, res, next) {
         }
       }
     });
+    var lis = [];
+    lis.push("1");
+    lis.push("2");
+    lis.push("3");
+    lis.push("4");
     res.render('product/order',
-    {
-      thanhcong: thanhcong,
-      thatbai : thatbai,
-      message : message,
-      all : all,
-      allChuaXacNhan: all2
-    });
+      {
+        thanhcong: thanhcong,
+        thatbai: thatbai,
+        message: message,
+        all: all,
+        allChuaXacNhan: all2,
+        lis: lis
+      });
   })
 
 });
