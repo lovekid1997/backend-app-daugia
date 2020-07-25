@@ -62,7 +62,7 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
 
   User.find({
     '_id': { $in: unique }
-  }, function (err, docs) {
+  }).then(docs => {
     docs.forEach(function (data) {
       emails.push({ id: data._id, mail: data.email });
     });
@@ -70,7 +70,7 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
     for (var i = 0; i < s.length; i += 2) {
       for (var j = 0; j < emails.length; j++) {
         if (s[i] == emails[j]['id']) {
-          var text = "Xin vui lòng vào xác nhận sản phẩm " + s[i+1];
+          var text = "Xin vui lòng vào xác nhận sản phẩm " + s[i + 1];
           var mailOption = {
             from: 'infohappj@gmail.com',
             to: emails[j]['mail'],
@@ -88,10 +88,11 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
         }
       }
     }
-  
-  }).then(()=>{
-    res.render('product/sendmail',{data : emails});
+  }).then(() => {
+    res.render('product/sendmail', { data: emails });
   });
+
+
 });
 
 router.post('/order', isLoggedIn, function (req, res, next) {
