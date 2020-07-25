@@ -39,10 +39,133 @@ const User = require('../models/userModel');
 // coinst db = Firebase.database();
 // var rootRef = db.ref('products');
 
-router.get('/order/:id', isLoggedIn, function (req, res, next) {
- 
-      res.render('product/order'
-      );
+router.post('/order',isLoggedIn, function (req, res, next) {
+  var time = req.body.ngay;
+  res.redirect('/user/order/' + time);
+});
+
+router.get('/order/:ngay',isLoggedIn, function (req, res, next) {
+  var message = "";
+  
+  var ngay = req.params.ngay;
+
+  var myDate = ngay.split("-");
+  var newDate = myDate[1] + "/" + myDate[2] + "/" + myDate[0];
+
+  var dayy = new Date(newDate);
+  if(ngay.toString().length == 1){
+    message = "Vui lòng submit ngày";
+  }else{
+    message = "Đang chọn " + newDate;
+  }
+  var today = Date.now();
+
+  var db = Firebase.database();
+  var rootRef = db.ref('products');
+  rootRef.once("value").then(function (data) {
+    var thatbai = [];
+    var thanhcong = [];
+    var all =[];
+    var all2 = [];
+    data.forEach(function (index) {
+      if (parseInt(today) < parseInt(index.val()['extraTime'])) {
+        console.log("chua het thoi gian dau gia");
+      } else {
+        var d = new Date(parseInt(index.val()['extraTime']));
+        var dd = String(d.getDate()).padStart(2, '0');
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var yyyy = d.getFullYear();
+        d = mm + '/' + dd + '/' + yyyy;
+        var dateF = new Date(d);
+
+        if (dayy.getTime() == dateF.getTime()) {
+          var key = index.key;
+          if(data.child(key+"/failure").exists()){
+              if(index.val()['failure']){
+                thatbai.push({
+                  imageProduct: index.val()['imageProduct'],
+                  nameProduct: index.val()['nameProduct'],
+                  userId: index.val()['userId'],
+                  nameProductType: index.val()['nameProductType'],
+                  startPriceProduct: index.val()['startPriceProduct'],
+                  status: index.val()['status'],
+                  description: index.val()['description'],
+                  extraTime: index.val()['extraTime'],
+                  registerDate: index.val()['registerDate'],
+                  winner: index.val()['winner'],
+                  hide: index.val()['hide'],
+                  currentPrice: index.val()['currentPrice'],
+                  played: index.val()['played'],
+                  failure : index.val()['failure'],
+                  id: key
+                });
+              }else{
+                thanhcong.push({
+                  imageProduct: index.val()['imageProduct'],
+                  nameProduct: index.val()['nameProduct'],
+                  userId: index.val()['userId'],
+                  nameProductType: index.val()['nameProductType'],
+                  startPriceProduct: index.val()['startPriceProduct'],
+                  status: index.val()['status'],
+                  description: index.val()['description'],
+                  extraTime: index.val()['extraTime'],
+                  registerDate: index.val()['registerDate'],
+                  winner: index.val()['winner'],
+                  hide: index.val()['hide'],
+                  currentPrice: index.val()['currentPrice'],
+                  failure : index.val()['failure'],
+                  played: index.val()['played'],
+                  id: key
+                });
+              }
+              all.push({
+                imageProduct: index.val()['imageProduct'],
+                nameProduct: index.val()['nameProduct'],
+                userId: index.val()['userId'],
+                nameProductType: index.val()['nameProductType'],
+                startPriceProduct: index.val()['startPriceProduct'],
+                status: index.val()['status'],
+                description: index.val()['description'],
+                extraTime: index.val()['extraTime'],
+                registerDate: index.val()['registerDate'],
+                winner: index.val()['winner'],
+                hide: index.val()['hide'],
+                currentPrice: index.val()['currentPrice'],
+                failure : index.val()['failure'],
+                played: index.val()['played'],
+                id: key
+              });
+          }else{
+            all2.push({
+              imageProduct: index.val()['imageProduct'],
+              nameProduct: index.val()['nameProduct'],
+              userId: index.val()['userId'],
+              nameProductType: index.val()['nameProductType'],
+              startPriceProduct: index.val()['startPriceProduct'],
+              status: index.val()['status'],
+              description: index.val()['description'],
+              extraTime: index.val()['extraTime'],
+              registerDate: index.val()['registerDate'],
+              winner: index.val()['winner'],
+              hide: index.val()['hide'],
+              currentPrice: index.val()['currentPrice'],
+              played: index.val()['played'],
+              id: key
+            });
+          }
+        }
+      }
+    });
+    res.render('product/order',
+    {
+      thanhcong: thanhcong,
+      thatbai : thatbai,
+      message : message,
+      all : all,
+      allChuaXacNhan: all2
+    });
+  })
+
 });
 
 
@@ -50,15 +173,15 @@ router.get('/manager/details/:_id', isLoggedIn, function (req, res, next) {
   var idProduct = req.params._id;
   var listUser = [];
   User.findById(idProduct)
-  .lean()
-  .then(docs => {
-    var date = new Date(docs.create_at);
-    var d = new Date(date.getTime()).toLocaleString();
-      res.render('product/usermanagerDetails',{
+    .lean()
+    .then(docs => {
+      var date = new Date(docs.create_at);
+      var d = new Date(date.getTime()).toLocaleString();
+      res.render('product/usermanagerDetails', {
         data: docs, date: d
       });
-      
-  });
+
+    });
 
 });
 
@@ -67,18 +190,18 @@ router.get('/manager', isLoggedIn, function (req, res, next) {
 
   var listUser = [];
   User.find()
-  .lean()
-  .then(docs => {
-      docs.forEach(function(index){
-          listUser.push(index);
+    .lean()
+    .then(docs => {
+      docs.forEach(function (index) {
+        listUser.push(index);
       });
 
-      res.render('product/usermanager',{
+      res.render('product/usermanager', {
         data: listUser,
         message: "message"
       });
 
-  });
+    });
 
 
 
