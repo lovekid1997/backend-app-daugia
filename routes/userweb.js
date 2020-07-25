@@ -88,6 +88,8 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
         }
       }
     }
+  
+  }).then(()=>{
     res.render('product/sendmail',{data : emails});
   });
  
