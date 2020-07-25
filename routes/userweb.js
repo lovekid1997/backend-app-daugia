@@ -40,36 +40,60 @@ const User = require('../models/userModel');
 // coinst db = Firebase.database();
 // var rootRef = db.ref('products');
 
-// router.post('/sendemail', function (req, res, next) {
+router.post('/sendemail', function (req, res, next) {
+  var emails = [];
+  var a = req.body.message;
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'infohappj@gmail.com',
+      pass: 'wearegreate'
+    }
+  });
 
-//   var a = req.body.message;
-//   console.log(a);
-  
-//   var transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//       user: 'infohappj@gmail.com',
-//       pass: 'wearegreate'
-//     }
-//   });
-//   var mailOption = {
-//     from: 'infohappj@gmail.com',
-//     to: 'beminhquan3@gmail.com',
-//     subject: 'Test',
-//     text: 'It work'
-//   };
+  var s = a.split(',');
 
-//   // transporter.sendMail(mailOption, function (err, data) {
-//   //   if (err) {
-//   //     console.log('err')
-//   //   } else {
-//   //     console.log('Email sent!!!');
-//   //   }
-//   // });
-//   res.end(a);
-// });
+  var list = [];
+  for (var i = 0; i < s.length; i += 2) {
+    list.push(s[i]);
+  }
 
-router.post('/order',  function (req, res, next) {
+  var unique = Array.from(new Set(list));
+
+  User.find({
+    '_id': { $in: unique }
+  }, function (err, docs) {
+    docs.forEach(function (data) {
+      emails.push({ id: data._id, mail: data.email });
+    });
+  }).then(() => {
+    for (var i = 0; i < s.length; i += 2) {
+      for (var j = 0; j < emails.length; j++) {
+        if (s[i] == emails[j]['id']) {
+          var text = "Xin vui lòng vào xác nhận sản phẩm " + s[i+1];
+          var mailOption = {
+            from: 'infohappj@gmail.com',
+            to: emails[j]['mail'],
+            subject: 'Kiểm duyệt sản phẩm',
+            text: text
+          };
+          transporter.sendMail(mailOption, function (err, data) {
+            if (err) {
+              console.log('err');
+              console.log(err);
+            } else {
+              console.log('Email sent!!!');
+            }
+          });
+        }
+      }
+    }
+    res.render('product/sendmail',{data : emails});
+  });
+ 
+});
+
+router.post('/order', function (req, res, next) {
   var time = req.body.ngay;
   res.redirect('/user/order/' + time);
 });
@@ -97,6 +121,8 @@ router.get('/order/:ngay', function (req, res, next) {
     var thanhcong = [];
     var all = [];
     var all2 = [];
+    var listId = [];
+
     data.forEach(function (index) {
       if (parseInt(today) < parseInt(index.val()['extraTime'])) {
         console.log("chua het thoi gian dau gia");
@@ -182,15 +208,15 @@ router.get('/order/:ngay', function (req, res, next) {
               played: index.val()['played'],
               id: key
             });
+            listId.push(
+              index.val()['userId']);
+            listId.push(index.val()['nameProduct']);
           }
         }
       }
     });
-    var lis = [];
-    lis.push("1");
-    lis.push("2");
-    lis.push("3");
-    lis.push("4");
+
+
     res.render('product/order',
       {
         thanhcong: thanhcong,
@@ -198,7 +224,7 @@ router.get('/order/:ngay', function (req, res, next) {
         message: message,
         all: all,
         allChuaXacNhan: all2,
-        lis: lis
+        lis: listId
       });
   })
 
