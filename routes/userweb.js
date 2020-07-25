@@ -66,7 +66,6 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
     docs.forEach(function (data) {
       emails.push({ id: data._id, mail: data.email });
     });
-  }).then(() => {
     for (var i = 0; i < s.length; i += 2) {
       for (var j = 0; j < emails.length; j++) {
         if (s[i] == emails[j]['id']) {
@@ -91,8 +90,6 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
   }).then(() => {
     res.render('product/sendmail', { data: emails });
   });
-
-
 });
 
 router.post('/order', isLoggedIn, function (req, res, next) {
