@@ -92,12 +92,12 @@ router.post('/sendemail', isLoggedIn, function (req, res, next) {
   });
 });
 
-router.post('/order', isLoggedIn, function (req, res, next) {
+router.post('/order', function (req, res, next) {
   var time = req.body.ngay;
   res.redirect('/user/order/' + time);
 });
 
-router.get('/order/:ngay', isLoggedIn, function (req, res, next) {
+router.get('/order/:ngay', function (req, res, next) {
   var message = "";
 
   var ngay = req.params.ngay;
@@ -223,7 +223,8 @@ router.get('/order/:ngay', isLoggedIn, function (req, res, next) {
         message: message,
         all: all,
         allChuaXacNhan: all2,
-        lis: listId
+        lis: listId,
+        day: newDate
       });
   })
 

@@ -14,7 +14,7 @@ var usersWebRouter = require('./routes/userweb');
 var usersRouter = require('./routes/users');
 var productRoutes = require('./routes/product');
 var categoryRoutes = require('./routes/category');
-
+var testexcel = require('./routes/testExcel');
 var app = express();
 
 
@@ -70,7 +70,7 @@ app.use(require('./controllers/authController'));
 app.use('/product',productRoutes);
 app.use('/category',categoryRoutes);
 app.use('/users', usersRouter);
-
+app.use('/excel',testexcel);
 
 
 
