@@ -479,6 +479,14 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
   var time = req.body.time;
   if (req.body.time == 2) {
     time = (parseInt(Date.now()) + 7200000).toString();
+  }else if(req.body.time == 4){
+    time = (parseInt(Date.now()) + 14400000).toString();
+  }else if(req.body.time == 6){
+    time = (parseInt(Date.now()) + 21600000).toString();
+  }else if(req.body.time == 8){
+    time = (parseInt(Date.now()) + 28800000).toString();
+  }else if(req.body.time == 10){
+    time = (parseInt(Date.now()) + 36000000).toString();
   }
   const product = {
     imageProduct: images,
