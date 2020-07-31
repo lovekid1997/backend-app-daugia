@@ -176,7 +176,7 @@ router.post('/test', function (req, res, next) {
                     color: {
                         rgb: '000000'
                     },
-                    sz: 16,
+                    sz: 14,
                     bold: true,
 
                 }
@@ -391,21 +391,101 @@ router.post('/test', function (req, res, next) {
         var stt = 1;
         var tongtien = 0;
         var index = 0;
-        console.log(all2);
+        var tongtiendadaugia = 0;
         if (parseInt(id) == 4) {
             all2.forEach((item) => {
                 dataset.push({
                     stt: stt,
                     nameProduct: item['nameProduct'],
-                    productType:  item['nameProductType'],
-                    startPrice:  item['currentPrice'],
+                    productType: item['nameProductType'],
+                    startPrice: item['currentPrice'],
                     currentPrice: item['startPriceProduct'],
                     nguoiThangCuoc: item['winner'][0]
                 });
+                tongtien = parseInt(item['currentPrice']) + tongtien;
+                tongtiendadaugia= parseInt(item['startPriceProduct']) + tongtiendadaugia;
                 stt++;
                 index++;
-                if(index == all2.length -1){
-                    merges.push( { start: { row: index, column: 1 }, end: { row: index, column: 10 } });
+                if (index == all2.length) {
+                    merges.push({ start: { row: index + 4, column: 1 }, end: { row: index + 4, column: 3 } });
+                    dataset.push({
+                        stt: "Tổng tiền: ",
+                        startPrice: tongtien,
+                        currentPrice: tongtiendadaugia,
+                        nguoiThangCuoc: " "
+                    });
+                }
+            });
+        }else if(parseInt(id) == 3){
+            thatbai.forEach((item) => {
+                dataset.push({
+                    stt: stt,
+                    nameProduct: item['nameProduct'],
+                    productType: item['nameProductType'],
+                    startPrice: item['currentPrice'],
+                    currentPrice: item['startPriceProduct'],
+                    nguoiThangCuoc: item['winner'][0]
+                });
+                tongtien = parseInt(item['currentPrice']) + tongtien;
+                tongtiendadaugia= parseInt(item['startPriceProduct']) + tongtiendadaugia;
+                stt++;
+                index++;
+                if (index == thatbai.length) {
+                    merges.push({ start: { row: index + 4, column: 1 }, end: { row: index + 4, column: 3 } });
+                    dataset.push({
+                        stt: "Tổng tiền: ",
+                        startPrice: tongtien,
+                        currentPrice: tongtiendadaugia,
+                        nguoiThangCuoc: " "
+                    });
+                }
+            });
+        }else if(parseInt(id) == 2){
+            thanhcong.forEach((item) => {
+                dataset.push({
+                    stt: stt,
+                    nameProduct: item['nameProduct'],
+                    productType: item['nameProductType'],
+                    startPrice: item['currentPrice'],
+                    currentPrice: item['startPriceProduct'],
+                    nguoiThangCuoc: item['winner'][0]
+                });
+                tongtien = parseInt(item['currentPrice']) + tongtien;
+                tongtiendadaugia= parseInt(item['startPriceProduct']) + tongtiendadaugia;
+                stt++;
+                index++;
+                if (index == thanhcong.length) {
+                    merges.push({ start: { row: index + 4, column: 1 }, end: { row: index + 4, column: 3 } });
+                    dataset.push({
+                        stt: "Tổng tiền: ",
+                        startPrice: tongtien,
+                        currentPrice: tongtiendadaugia,
+                        nguoiThangCuoc: " "
+                    });
+                }
+            });
+        }else if(parseInt(id) == 1){
+            all.forEach((item) => {
+                dataset.push({
+                    stt: stt,
+                    nameProduct: item['nameProduct'],
+                    productType: item['nameProductType'],
+                    startPrice: item['currentPrice'],
+                    currentPrice: item['startPriceProduct'],
+                    nguoiThangCuoc: item['winner'][0]
+                });
+                tongtien = parseInt(item['currentPrice']) + tongtien;
+                tongtiendadaugia= parseInt(item['startPriceProduct']) + tongtiendadaugia;
+                stt++;
+                index++;
+                if (index == thanhcong.length) {
+                    merges.push({ start: { row: index + 4, column: 1 }, end: { row: index + 4, column: 3 } });
+                    dataset.push({
+                        stt: "Tổng tiền: ",
+                        startPrice: tongtien,
+                        currentPrice: tongtiendadaugia,
+                        nguoiThangCuoc: " "
+                    });
                 }
             });
         }
@@ -414,7 +494,7 @@ router.post('/test', function (req, res, next) {
         // Define an array of merges. 1-1 = A:1
         // The merges are independent of the data.
         // A merge will overwrite all data _not_ in the top-left cell.
-      
+
 
         // Create the excel report.
         // This function will return Buffer

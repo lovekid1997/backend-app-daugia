@@ -27,6 +27,28 @@
 </head>
 
 <body class="sb-nav-fixed">
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v7.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <!-- Your Chat Plugin code -->
+    <div class="fb-customerchat" attribution=setup_tool page_id="103975691417069" theme_color="#0084ff"
+        logged_in_greeting="Gửi lên chào đến admin" logged_out_greeting="Gửi lên chào đến admin">
+    </div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="/user/admin">Admin page</a><button class="btn btn-link btn-sm order-1 order-lg-0"
             id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button><!-- Navbar Search-->
@@ -185,6 +207,13 @@
                                 </tfoot>
 
                         </table>
+                        <form action="/excel/test" method="post">
+                            <input type="text" value={{day}} name="day" id="day" style="display: none;">
+                            <input type="text" value="1" name="id" id="id" style="display: none;">
+                            <input type="text" value="Hóa đơn người bán hàng đã xác nhận" name="message" id="message"
+                                style="display: none;">
+                            <button class="btn btn-primary" type="submit">Xuất excel</button>
+                        </form>
                     </div>
 
                     <div id="thanhcong" style="display: none;">
@@ -247,6 +276,13 @@
                                 </tfoot>
 
                         </table>
+                        <form action="/excel/test" method="post">
+                            <input type="text" value={{day}} name="day" id="day" style="display: none;">
+                            <input type="text" value="2" name="id" id="id" style="display: none;">
+                            <input type="text" value="Hóa đơn người bán xác nhận thành công" name="message" id="message"
+                                style="display: none;">
+                            <button class="btn btn-primary" type="submit">Xuất excel</button>
+                        </form>
                     </div>
 
                     <div id="thatbai" style="display: none;">
@@ -309,6 +345,13 @@
                                 </tfoot>
 
                         </table>
+                        <form action="/excel/test" method="post">
+                            <input type="text" value={{day}} name="day" id="day" style="display: none;">
+                            <input type="text" value="3" name="id" id="id" style="display: none;">
+                            <input type="text" value="Hóa đơn người bán xác nhận thua" name="message" id="message"
+                                style="display: none;">
+                            <button class="btn btn-primary" type="submit">Xuất excel</button>
+                        </form>
                     </div>
 
                     <div id="chuaxacnhan" style="display: none;">
@@ -381,7 +424,8 @@
                         <form action="/excel/test" method="post">
                             <input type="text" value={{day}} name="day" id="day" style="display: none;">
                             <input type="text" value="4" name="id" id="id" style="display: none;">
-                            <input type="text" value="Hóa đơn người bán chưa xác nhận" name="message" id="message" style="display: none;">
+                            <input type="text" value="Hóa đơn người bán chưa xác nhận" name="message" id="message"
+                                style="display: none;">
                             <button class="btn btn-primary" type="submit">Xuất excel</button>
                         </form>
                     </div>
