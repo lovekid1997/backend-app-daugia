@@ -110,6 +110,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         //     a : "qwe",
         //     b : "asdq"
         // });
+        var fcms = [];
+        fcms.unshift("0");
 
        var played = [];
        played.unshift("null");
@@ -130,7 +132,8 @@ router.post('/new/:userID',upload.array('imageProduct',5),(req,res,next)=>{
         played : played,
         inspector : false,
         uyTin: req.body.uyTin,
-        fcmtoken: req.body.fcmtoken
+        fcmtoken: req.body.fcmtoken,
+        fcms: fcms
         };
 
         db.ref('products/').push(product);

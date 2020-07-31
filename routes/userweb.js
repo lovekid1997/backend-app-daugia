@@ -456,6 +456,10 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
   //     a : "qwe",
   //     b : "asdq"
   // });
+  var fcms = [];
+  fcms.unshift("0");
+
+
 
   var played = [];
   played.unshift("null");
@@ -504,6 +508,7 @@ router.post('/product/addd', upload.array('imageProduct', 5), isLoggedIn, functi
     played: played,
     inspector: false,
     uyTin: req.body.uytin,
+    fcms: fcms,
     fcmtoken: "cfNA8tQT-7A:APA91bFdIhmLRtQ09peSpwbQumhuS_Y9RdVTuWMtDBB5VsjkroB220fPwvakRBrF6dnBPh28YD3wpm_W3e9uSo0hYaLETSFaOMe6WrfbGCyWUvzXRO2K8HOybloGPZVOWim6Q_XjvLTP"
   };
   var db = Firebase.database();
