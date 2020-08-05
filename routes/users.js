@@ -100,6 +100,24 @@ router.get('/emailer/:userID', function(req, res, next) {
    });
 });
 
+router.get('/getaddress/:userID', function(req, res, next) {
+  const userID = req.params.userID;
+ User.findById(userID)
+    .exec()
+    .then(docs => {
+            var c = docs.address;
+            res.status(200).json({
+              address : c
+            });
+    })
+    .catch(err=>{
+        console.log(err)
+        res.status(500).json({
+            error: err
+        })
+   });
+});
+
 router.put('/update/:userID',upload.single('imageUser'),async(req,res) =>{
   const userID = req.params.userID;
   User.findById(userID).exec()
